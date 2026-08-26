@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Melitta Coffee - Menü</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background-image:
+                linear-gradient(
+                    rgba(45, 28, 18, 0.55),
+                    rgba(45, 28, 18, 0.55)
+                ),
+                url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1800&q=85");
+
+            background-size: cover;
+
+            background-position: center;
+
+            background-attachment: fixed;
+
+            color: white;
+
+        }
+
+
+        .container {
+
+            width: 90%;
+
+            max-width: 650px;
+
+            margin: auto;
+
+            padding-top: 35px;
+
+            padding-bottom: 50px;
+
+        }
+
+
+        /* GERİ BUTONU */
+
+        .back {
+
+            display: inline-block;
+
+            margin-bottom: 25px;
+
+            padding: 10px 17px;
+
+            background: rgba(255,255,255,0.92);
+
+            color: #4b3022;
+
+            text-decoration: none;
+
+            border-radius: 12px;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+        }
+
+
+        /* BAŞLIK */
+
+        .title {
+
+            text-align: center;
+
+            margin-bottom: 32px;
+
+        }
+
+
+        .title h1 {
+
+            font-family: Georgia, serif;
+
+            font-size: 39px;
+
+            color: #f4e4c8;
+
+            text-shadow:
+                0 3px 8px rgba(0,0,0,0.6);
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .title p {
+
+            color: #fff3df;
+
+            font-size: 17px;
+
+        }
+
+
+        /* KATEGORİLER */
+
+        .categories {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 16px;
+
+        }
+
+
+        .category {
+
+            min-height: 145px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 12px;
+
+            background: rgba(255,248,238,0.95);
+
+            color: #4b3022;
+
+            text-decoration: none;
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 9px 26px rgba(0,0,0,0.25);
+
+            transition: 0.25s;
+
+            cursor: pointer;
+
+        }
+
+
+        .category:hover {
+
+            transform: translateY(-5px);
+
+            background: white;
+
+        }
+
+
+        .category-icon {
+
+            width: 55px;
+
+            height: 55px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #70513d;
+
+            border-radius: 17px;
+
+            font-size: 29px;
+
+        }
+
+
+        .category-name {
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+        }
+
+
+        /* ÜRÜNLER */
+
+        .products {
+
+            display: none;
+
+        }
+
+
+        .products.active {
+
+            display: block;
+
+        }
+
+
+        .product {
+
+            background: rgba(255,248,238,0.96);
+
+            color: #4b3022;
+
+            border-radius: 18px;
+
+            padding: 12px;
+
+            margin-bottom: 15px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            box-shadow:
+                0 8px 22px rgba(0,0,0,0.22);
+
+        }
+
+
+        .product-image {
+
+            width: 95px;
+
+            height: 95px;
+
+            object-fit: cover;
+
+            border-radius: 14px;
+
+            flex-shrink: 0;
+
+            background: #ddd;
+
+        }
+
+
+        .product-info {
+
+            flex: 1;
+
+        }
+
+
+        .product-name {
+
+            font-family: Georgia, serif;
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .product-description {
+
+            color: #76594a;
+
+            font-size: 13px;
+
+            line-height: 1.4;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .product-price {
+
+            color: #70513d;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+        }
+
+
+        .empty {
+
+            background: rgba(255,248,238,0.96);
+
+            color: #4b3022;
+
+            border-radius: 18px;
+
+            padding: 25px;
+
+            text-align: center;
+
+        }
+
+
+        .category-title {
+
+            text-align: center;
+
+            color: #f4e4c8;
+
+            font-family: Georgia, serif;
+
+            font-size: 30px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        /* MOBİL */
+
+        @media (max-width: 500px) {
+
+
+            .container {
+
+                width: 92%;
+
+                padding-top: 25px;
+
+            }
+
+
+            .title h1 {
+
+                font-size: 32px;
+
+            }
+
+
+            .title p {
+
+                font-size: 15px;
+
+            }
+
+
+            .categories {
+
+                gap: 12px;
+
+            }
+
+
+            .category {
+
+                min-height: 130px;
+
+                border-radius: 19px;
+
+            }
+
+
+            .category-icon {
+
+                width: 48px;
+
+                height: 48px;
+
+                border-radius: 14px;
+
+                font-size: 25px;
+
+            }
+
+
+            .category-name {
+
+                font-size: 14px;
+
+            }
+
+
+            .product-image {
+
+                width: 75px;
+
+                height: 75px;
+
+            }
+
+
+            .product-name {
+
+                font-size: 17px;
+
+            }
+
+
+            .product-description {
+
+                font-size: 11px;
+
+            }
+
+
+            .product-price {
+
+                font-size: 15px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- GERİ -->
+
+    <a href="index.html"
+       class="back"
+       id="backButton">
+
+        ← Ana Sayfa
+
+    </a>
+
+
+    <!-- BAŞLIK -->
+
+    <div class="title">
+
+        <h1>
+            Melitta Coffee
+        </h1>
+
+        <p id="pageSubtitle">
+            Menümüz
+        </p>
+
+    </div>
+
+
+    <!-- KATEGORİLER -->
+
+    <div
+        class="categories"
+        id="categories">
+
+    </div>
+
+
+    <!-- ÜRÜNLER -->
+
+    <div
+        class="products"
+        id="products">
+
+    </div>
+
+
+</div>
+
+
+<!-- MENÜ VERİLERİ -->
+
+<script src="script.js"></script>
+
+
+<script>
+
+
+    // =====================================
+    // URL'DEN KATEGORİYİ AL
+    // =====================================
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const selectedCategoryId =
+        params.get("kategori");
+
+
+    // =====================================
+    // ELEMENTLER
+    // =====================================
+
+    const categoriesContainer =
+        document.getElementById(
+            "categories"
+        );
+
+
+    const productsContainer =
+        document.getElementById(
+            "products"
+        );
+
+
+    const pageSubtitle =
+        document.getElementById(
+            "pageSubtitle"
+        );
+
+
+    const backButton =
+        document.getElementById(
+            "backButton"
+        );
+
+
+
+    // =====================================
+    // KATEGORİLERİ GÖSTER
+    // =====================================
+
+    function showCategories() {
+
+
+        categoriesContainer.innerHTML =
+            "";
+
+
+        menuData.categories.forEach(
+            category => {
+
+
+                const link =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                link.className =
+                    "category";
+
+
+                link.href =
+                    "menu.html?kategori=" +
+                    encodeURIComponent(
+                        category.id
+                    );
+
+
+                link.innerHTML = `
+
+                    <div class="category-icon">
+
+                        ${category.icon}
+
+                    </div>
+
+
+                    <div class="category-name">
+
+                        ${category.name}
+
+                    </div>
+
+                `;
+
+
+                categoriesContainer.appendChild(
+                    link
+                );
+
+            }
+        );
+
+    }
+
+
+
+    // =====================================
+    // ÜRÜNLERİ GÖSTER
+    // =====================================
+
+    function showProducts(category) {
+
+
+        categoriesContainer.style.display =
+            "none";
+
+
+        productsContainer.classList.add(
+            "active"
+        );
+
+
+        pageSubtitle.textContent =
+            category.name;
+
+
+        backButton.href =
+            "menu.html";
+
+
+        backButton.textContent =
+            "← Kategoriler";
+
+
+        const products =
+            menuData.products[
+                category.id
+            ] || [];
+
+
+        productsContainer.innerHTML =
+            "";
+
+
+        if (products.length === 0) {
+
+
+            productsContainer.innerHTML = `
+
+                <div class="empty">
+
+                    Bu kategoride henüz
+                    ürün bulunmuyor.
+
+                </div>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        products.forEach(
+            product => {
+
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "product";
+
+
+                item.innerHTML = `
+
+                    <img
+                        class="product-image"
+                        src="${product.image}"
+                        alt="${product.name}"
+                    >
+
+
+                    <div class="product-info">
+
+                        <div class="product-name">
+
+                            ${product.name}
+
+                        </div>
+
+
+                        <div class="product-description">
+
+                            ${product.description}
+
+                        </div>
+
+
+                        <div class="product-price">
+
+                            ${product.price} TL
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                productsContainer.appendChild(
+                    item
+                );
+
+            }
+        );
+
+    }
+
+
+
+    // =====================================
+    // SAYFA BAŞLANGICI
+    // =====================================
+
+    if (selectedCategoryId) {
+
+
+        const category =
+            menuData.categories.find(
+                item =>
+                    item.id ===
+                    selectedCategoryId
+            );
+
+
+        if (category) {
+
+            showProducts(category);
+
+        } else {
+
+            showCategories();
+
+        }
+
+
+    } else {
+
+
+        showCategories();
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>

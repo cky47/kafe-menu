@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Melitta Coffee - Ürün Yönetimi</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background:
+                linear-gradient(
+                    rgba(45, 28, 18, 0.90),
+                    rgba(45, 28, 18, 0.90)
+                ),
+                url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1800&q=85");
+
+            background-size: cover;
+            background-position: center;
+
+            color: white;
+        }
+
+        .container {
+
+            width: 90%;
+            max-width: 700px;
+
+            margin: auto;
+
+            padding: 30px 0 60px;
+        }
+
+        .back {
+
+            display: inline-block;
+
+            margin-bottom: 25px;
+
+            padding: 9px 16px;
+
+            background: white;
+
+            color: #4b3022;
+
+            text-decoration: none;
+
+            border-radius: 11px;
+
+            font-weight: bold;
+
+            font-size: 14px;
+        }
+
+        h1 {
+
+            text-align: center;
+
+            font-family: Georgia, serif;
+
+            color: #f4e4c8;
+
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+
+            text-align: center;
+
+            color: #eadbc5;
+
+            margin-bottom: 30px;
+        }
+
+        /* ÜRÜN KARTI */
+
+        .product {
+
+            background: rgba(255,248,238,0.97);
+
+            color: #4b3022;
+
+            padding: 12px;
+
+            border-radius: 18px;
+
+            margin-bottom: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+        }
+
+        .product-image {
+
+            width: 90px;
+            height: 90px;
+
+            object-fit: cover;
+
+            border-radius: 14px;
+
+            background: #ddd;
+
+            flex-shrink: 0;
+        }
+
+        .product-info {
+
+            flex: 1;
+
+            min-width: 0;
+        }
+
+        .product-name {
+
+            font-family: Georgia, serif;
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            margin-bottom: 5px;
+        }
+
+        .product-description {
+
+            font-size: 13px;
+
+            color: #76594a;
+
+            line-height: 1.35;
+
+            margin-bottom: 7px;
+        }
+
+        .product-price {
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            color: #70513d;
+        }
+
+        .buttons {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+        .edit,
+        .delete {
+
+            border: none;
+
+            padding: 8px 10px;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        .edit {
+
+            background: #70513d;
+
+            color: white;
+        }
+
+        .delete {
+
+            background: #ead1c7;
+
+            color: #7a3020;
+        }
+
+        /* EKLE BUTONU */
+
+        .add {
+
+            width: 100%;
+
+            padding: 17px;
+
+            margin-top: 5px;
+
+            border: none;
+
+            border-radius: 15px;
+
+            background: #f4e4c8;
+
+            color: #4b3022;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .add:hover {
+
+            background: white;
+        }
+
+        .empty {
+
+            text-align: center;
+
+            padding: 30px;
+
+            background: rgba(255,248,238,0.97);
+
+            color: #4b3022;
+
+            border-radius: 16px;
+
+            margin-bottom: 15px;
+        }
+
+        /* MODAL */
+
+        .modal {
+
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(0,0,0,0.70);
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            z-index: 1000;
+        }
+
+        .modal.active {
+
+            display: flex;
+        }
+
+        .form {
+
+            width: 100%;
+
+            max-width: 500px;
+
+            max-height: 90vh;
+
+            overflow-y: auto;
+
+            background: #fff8ee;
+
+            color: #4b3022;
+
+            border-radius: 20px;
+
+            padding: 25px;
+        }
+
+        .form h2 {
+
+            font-family: Georgia, serif;
+
+            text-align: center;
+
+            margin-bottom: 22px;
+        }
+
+        .field {
+
+            margin-bottom: 17px;
+        }
+
+        .field label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-weight: bold;
+
+            font-size: 14px;
+        }
+
+        .field input,
+        .field textarea {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #d8c8b8;
+
+            border-radius: 10px;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        .field textarea {
+
+            min-height: 90px;
+
+            resize: vertical;
+        }
+
+        .field input:focus,
+        .field textarea:focus {
+
+            border-color: #70513d;
+        }
+
+        .image-preview {
+
+            width: 100%;
+
+            height: 180px;
+
+            object-fit: cover;
+
+            border-radius: 12px;
+
+            background: #e8ded3;
+
+            display: none;
+
+            margin-top: 10px;
+        }
+
+        .image-preview.show {
+
+            display: block;
+        }
+
+        .choose-photo {
+
+            display: block;
+
+            width: 100%;
+
+            padding: 12px;
+
+            text-align: center;
+
+            background: #eadfce;
+
+            color: #4b3022;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        #photoInput {
+
+            display: none;
+        }
+
+        .form-buttons {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+        .save-button,
+        .cancel-button {
+
+            flex: 1;
+
+            border: none;
+
+            padding: 14px;
+
+            border-radius: 11px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .save-button {
+
+            background: #70513d;
+
+            color: white;
+        }
+
+        .cancel-button {
+
+            background: #e5d7ca;
+
+            color: #4b3022;
+        }
+
+        @media (max-width: 600px) {
+
+            .product {
+
+                align-items: flex-start;
+            }
+
+            .product-image {
+
+                width: 75px;
+                height: 75px;
+            }
+
+            .product-name {
+
+                font-size: 17px;
+            }
+
+            .product-description {
+
+                font-size: 11px;
+            }
+
+            .product-price {
+
+                font-size: 15px;
+            }
+
+            .buttons {
+
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <a href="menu-yonetim.html"
+       class="back">
+
+        ← Kategoriler
+
+    </a>
+
+
+    <h1 id="categoryTitle">
+        Ürünler
+    </h1>
+
+
+    <p class="subtitle">
+        Ürünlerini buradan yönet
+    </p>
+
+
+    <div id="products"></div>
+
+
+    <button
+        class="add"
+        onclick="openAddForm()">
+
+        + Yeni Ürün Ekle
+
+    </button>
+
+
+</div>
+
+
+<!-- =====================================
+     ÜRÜN FORMU
+===================================== -->
+
+<div
+    class="modal"
+    id="productModal">
+
+
+    <div class="form">
+
+
+        <h2 id="formTitle">
+            Yeni Ürün
+        </h2>
+
+
+        <div class="field">
+
+            <label>
+                Ürün adı
+            </label>
+
+            <input
+                type="text"
+                id="productName"
+                placeholder="Örn: Latte">
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                Açıklama
+            </label>
+
+            <textarea
+                id="productDescription"
+                placeholder="Ürün açıklaması..."></textarea>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                Fiyat (TL)
+            </label>
+
+            <input
+                type="number"
+                id="productPrice"
+                min="0"
+                step="0.01"
+                placeholder="150">
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                Ürün fotoğrafı
+            </label>
+
+
+            <label
+                class="choose-photo"
+                for="photoInput">
+
+                📷 Bilgisayardan Fotoğraf Seç
+
+            </label>
+
+
+            <input
+                type="file"
+                id="photoInput"
+                accept="image/*">
+
+
+            <img
+                id="imagePreview"
+                class="image-preview"
+                alt="Fotoğraf önizleme">
+
+        </div>
+
+
+        <div class="form-buttons">
+
+
+            <button
+                class="cancel-button"
+                onclick="closeForm()">
+
+                Vazgeç
+
+            </button>
+
+
+            <button
+                class="save-button"
+                onclick="saveProduct()">
+
+                💾 Kaydet
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<script src="script.js"></script>
+
+
+
+<script>
+
+
+    // =====================================
+    // URL'DEN KATEGORİYİ BUL
+    // =====================================
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const categoryId =
+        params.get("kategori");
+
+
+    const category =
+        menuData.categories.find(
+            item => item.id === categoryId
+        );
+
+
+    let editingIndex = null;
+
+    let selectedImage = "";
+
+
+
+    // =====================================
+    // KATEGORİ KONTROLÜ
+    // =====================================
+
+    if (!category) {
+
+        document.getElementById(
+            "categoryTitle"
+        ).textContent =
+            "Kategori bulunamadı";
+
+    } else {
+
+        document.getElementById(
+            "categoryTitle"
+        ).textContent =
+            category.icon +
+            " " +
+            category.name;
+
+    }
+
+
+
+    // =====================================
+    // FOTOĞRAF SEÇİLİNCE
+    // =====================================
+
+    document.getElementById(
+        "photoInput"
+    ).addEventListener(
+        "change",
+        function(event) {
+
+
+            const file =
+                event.target.files[0];
+
+
+            if (!file) {
+
+                return;
+
+            }
+
+
+            // Fotoğraf boyutunu kontrol et
+
+            if (
+                file.size >
+                3 * 1024 * 1024
+            ) {
+
+                alert(
+                    "Fotoğraf 3 MB'dan küçük olmalı."
+                );
+
+                event.target.value = "";
+
+                return;
+
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function(e) {
+
+                    selectedImage =
+                        e.target.result;
+
+
+                    const preview =
+                        document.getElementById(
+                            "imagePreview"
+                        );
+
+
+                    preview.src =
+                        selectedImage;
+
+
+                    preview.classList.add(
+                        "show"
+                    );
+
+                };
+
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+
+
+    // =====================================
+    // ÜRÜNLERİ GÖSTER
+    // =====================================
+
+    function showProducts() {
+
+
+        const container =
+            document.getElementById(
+                "products"
+            );
+
+
+        container.innerHTML = "";
+
+
+        const products =
+            menuData.products[
+                categoryId
+            ] || [];
+
+
+        if (products.length === 0) {
+
+            container.innerHTML = `
+
+                <div class="empty">
+
+                    Bu kategoride henüz ürün yok.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        products.forEach(
+            (product, index) => {
+
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "product";
+
+
+                item.innerHTML = `
+
+                    <img
+                        class="product-image"
+                        src="${product.image}"
+                        alt="${product.name}"
+                    >
+
+
+                    <div class="product-info">
+
+                        <div class="product-name">
+
+                            ${product.name}
+
+                        </div>
+
+
+                        <div class="product-description">
+
+                            ${product.description}
+
+                        </div>
+
+
+                        <div class="product-price">
+
+                            ${product.price} TL
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="buttons">
+
+                        <button
+                            class="edit"
+                            onclick="openEditForm(${index})">
+
+                            ✏️
+
+                        </button>
+
+
+                        <button
+                            class="delete"
+                            onclick="deleteProduct(${index})">
+
+                            🗑️
+
+                        </button>
+
+                    </div>
+
+                `;
+
+
+                container.appendChild(item);
+
+            }
+
+        );
+
+    }
+
+
+
+    // =====================================
+    // YENİ ÜRÜN FORMUNU AÇ
+    // =====================================
+
+    function openAddForm() {
+
+
+        editingIndex = null;
+
+        selectedImage = "";
+
+
+        document.getElementById(
+            "formTitle"
+        ).textContent =
+            "Yeni Ürün";
+
+
+        document.getElementById(
+            "productName"
+        ).value = "";
+
+
+        document.getElementById(
+            "productDescription"
+        ).value = "";
+
+
+        document.getElementById(
+            "productPrice"
+        ).value = "";
+
+
+        document.getElementById(
+            "photoInput"
+        ).value = "";
+
+
+        const preview =
+            document.getElementById(
+                "imagePreview"
+            );
+
+
+        preview.src = "";
+
+        preview.classList.remove(
+            "show"
+        );
+
+
+        document.getElementById(
+            "productModal"
+        ).classList.add(
+            "active"
+        );
+
+    }
+
+
+
+    // =====================================
+    // ÜRÜN DÜZENLEME FORMUNU AÇ
+    // =====================================
+
+    function openEditForm(index) {
+
+
+        const product =
+            menuData.products[
+                categoryId
+            ][index];
+
+
+        editingIndex = index;
+
+        selectedImage =
+            product.image;
+
+
+        document.getElementById(
+            "formTitle"
+        ).textContent =
+            "Ürünü Düzenle";
+
+
+        document.getElementById(
+            "productName"
+        ).value =
+            product.name;
+
+
+        document.getElementById(
+            "productDescription"
+        ).value =
+            product.description;
+
+
+        document.getElementById(
+            "productPrice"
+        ).value =
+            product.price;
+
+
+        document.getElementById(
+            "photoInput"
+        ).value = "";
+
+
+        const preview =
+            document.getElementById(
+                "imagePreview"
+            );
+
+
+        if (product.image) {
+
+            preview.src =
+                product.image;
+
+            preview.classList.add(
+                "show"
+            );
+
+        } else {
+
+            preview.src = "";
+
+            preview.classList.remove(
+                "show"
+            );
+
+        }
+
+
+        document.getElementById(
+            "productModal"
+        ).classList.add(
+            "active"
+        );
+
+    }
+
+
+
+    // =====================================
+    // FORMU KAPAT
+    // =====================================
+
+    function closeForm() {
+
+        document.getElementById(
+            "productModal"
+        ).classList.remove(
+            "active"
+        );
+
+    }
+
+
+
+    // =====================================
+    // ÜRÜNÜ KAYDET
+    // =====================================
+
+    function saveProduct() {
+
+
+        const name =
+            document.getElementById(
+                "productName"
+            ).value.trim();
+
+
+        const description =
+            document.getElementById(
+                "productDescription"
+            ).value.trim();
+
+
+        const price =
+            Number(
+                document.getElementById(
+                    "productPrice"
+                ).value
+            );
+
+
+        if (!name) {
+
+            alert(
+                "Lütfen ürün adını gir."
+            );
+
+            return;
+
+        }
+
+
+        if (!description) {
+
+            alert(
+                "Lütfen ürün açıklamasını gir."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            !price ||
+            price < 0
+        ) {
+
+            alert(
+                "Lütfen geçerli bir fiyat gir."
+            );
+
+            return;
+
+        }
+
+
+        // Yeni ürün
+
+        if (editingIndex === null) {
+
+
+            if (!selectedImage) {
+
+                alert(
+                    "Lütfen bir ürün fotoğrafı seç."
+                );
+
+                return;
+
+            }
+
+
+            const newProduct = {
+
+                id:
+                    Date.now().toString(),
+
+                name:
+                    name,
+
+                description:
+                    description,
+
+                price:
+                    price,
+
+                image:
+                    selectedImage
+
+            };
+
+
+            if (
+                !menuData.products[
+                    categoryId
+                ]
+            ) {
+
+                menuData.products[
+                    categoryId
+                ] = [];
+
+            }
+
+
+            menuData.products[
+                categoryId
+            ].push(
+                newProduct
+            );
+
+
+        } else {
+
+
+            // Mevcut ürünü güncelle
+
+            const product =
+                menuData.products[
+                    categoryId
+                ][editingIndex];
+
+
+            product.name =
+                name;
+
+
+            product.description =
+                description;
+
+
+            product.price =
+                price;
+
+
+            if (selectedImage) {
+
+                product.image =
+                    selectedImage;
+
+            }
+
+        }
+
+
+        try {
+
+            saveMenuData();
+
+        } catch (error) {
+
+            alert(
+                "Fotoğraf çok büyük olabilir. Daha küçük bir fotoğraf deneyin."
+            );
+
+            return;
+
+        }
+
+
+        closeForm();
+
+        showProducts();
+
+
+        alert(
+            editingIndex === null
+                ? "Ürün başarıyla eklendi."
+                : "Ürün başarıyla güncellendi."
+        );
+
+    }
+
+
+
+    // =====================================
+    // ÜRÜN SİL
+    // =====================================
+
+    function deleteProduct(index) {
+
+
+        const product =
+            menuData.products[
+                categoryId
+            ][index];
+
+
+        const answer =
+            confirm(
+                product.name +
+                " ürününü silmek istediğine emin misin?"
+            );
+
+
+        if (!answer) {
+
+            return;
+
+        }
+
+
+        menuData.products[
+            categoryId
+        ].splice(
+            index,
+            1
+        );
+
+
+        saveMenuData();
+
+        showProducts();
+
+
+        alert(
+            "Ürün silindi."
+        );
+
+    }
+
+
+
+    // =====================================
+    // BAŞLANGIÇ
+    // =====================================
+
+    if (category) {
+
+        showProducts();
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

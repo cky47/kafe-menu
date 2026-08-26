@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Melitta Coffee - Kahveler</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background-image:
+                linear-gradient(
+                    rgba(45, 28, 18, 0.55),
+                    rgba(45, 28, 18, 0.55)
+                ),
+                url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1800&q=85");
+
+            background-size: cover;
+
+            background-position: center;
+
+            background-attachment: fixed;
+
+            color: white;
+
+        }
+
+
+        .container {
+
+            width: 90%;
+
+            max-width: 650px;
+
+            margin: auto;
+
+            padding-top: 30px;
+
+            padding-bottom: 45px;
+
+        }
+
+
+        /* GERİ BUTONU */
+
+        .back {
+
+            display: inline-block;
+
+            margin-bottom: 20px;
+
+            padding: 9px 16px;
+
+            background: rgba(255,255,255,0.92);
+
+            color: #4b3022;
+
+            text-decoration: none;
+
+            border-radius: 11px;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+        }
+
+
+        /* BAŞLIK */
+
+        .title {
+
+            text-align: center;
+
+            margin-bottom: 28px;
+
+        }
+
+
+        .title h1 {
+
+            font-family: Georgia, serif;
+
+            font-size: 36px;
+
+            color: #f4e4c8;
+
+            text-shadow:
+                0 3px 8px rgba(0,0,0,0.6);
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .title p {
+
+            color: #fff3df;
+
+            font-size: 16px;
+
+        }
+
+
+        /* ÜRÜNLER */
+
+        .products {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 15px;
+
+        }
+
+
+        /* ÜRÜN KARTI */
+
+        .product {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 11px;
+
+            background: rgba(255,248,238,0.95);
+
+            color: #4b3022;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 8px 24px rgba(0,0,0,0.22);
+
+        }
+
+
+        /* FOTOĞRAF */
+
+        .product-image {
+
+            width: 100px;
+
+            height: 100px;
+
+            flex-shrink: 0;
+
+            object-fit: cover;
+
+            border-radius: 15px;
+
+        }
+
+
+        /* BİLGİ */
+
+        .product-info {
+
+            flex: 1;
+
+            min-width: 0;
+
+        }
+
+
+        .product-name {
+
+            font-family: Georgia, serif;
+
+            font-size: 21px;
+
+            font-weight: bold;
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .product-description {
+
+            font-size: 13px;
+
+            color: #76594a;
+
+            line-height: 1.35;
+
+            margin-bottom: 9px;
+
+        }
+
+
+        .price {
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            color: #6f4e37;
+
+        }
+
+
+        /* ÜRÜN YOKSA */
+
+        .empty {
+
+            text-align: center;
+
+            background: rgba(255,248,238,0.95);
+
+            color: #4b3022;
+
+            padding: 30px;
+
+            border-radius: 18px;
+
+            font-weight: bold;
+
+        }
+
+
+        /* TELEFON */
+
+        @media (max-width: 500px) {
+
+            .container {
+
+                width: 92%;
+
+                padding-top: 22px;
+
+            }
+
+
+            .title {
+
+                margin-bottom: 23px;
+
+            }
+
+
+            .title h1 {
+
+                font-size: 31px;
+
+            }
+
+
+            .title p {
+
+                font-size: 15px;
+
+            }
+
+
+            .products {
+
+                gap: 12px;
+
+            }
+
+
+            .product {
+
+                gap: 11px;
+
+                padding: 9px;
+
+                border-radius: 16px;
+
+            }
+
+
+            .product-image {
+
+                width: 82px;
+
+                height: 82px;
+
+                border-radius: 13px;
+
+            }
+
+
+            .product-name {
+
+                font-size: 18px;
+
+                margin-bottom: 5px;
+
+            }
+
+
+            .product-description {
+
+                font-size: 11px;
+
+                margin-bottom: 7px;
+
+            }
+
+
+            .price {
+
+                font-size: 16px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="container">
+
+
+        <!-- GERİ -->
+
+        <a href="menu.html" class="back">
+
+            ← Kategoriler
+
+        </a>
+
+
+        <!-- BAŞLIK -->
+
+        <div class="title">
+
+            <h1>☕ Kahveler</h1>
+
+            <p>Özenle hazırlanan kahvelerimiz</p>
+
+        </div>
+
+
+        <!-- ÜRÜNLER BURAYA GELECEK -->
+
+        <div
+            class="products"
+            id="products">
+
+        </div>
+
+
+    </div>
+
+
+    <!-- MENÜ VERİLERİ -->
+
+    <script src="script.js"></script>
+
+
+    <!-- ÜRÜNLERİ OLUŞTUR -->
+
+    <script>
+
+        const productsContainer =
+            document.getElementById("products");
+
+
+        const products =
+            menuData.products.kahveler;
+
+
+        if (products.length === 0) {
+
+            productsContainer.innerHTML = `
+
+                <div class="empty">
+
+                    Bu kategoride henüz ürün bulunmuyor.
+
+                </div>
+
+            `;
+
+        } else {
+
+
+            products.forEach(product => {
+
+
+                const card =
+                    document.createElement("div");
+
+
+                card.className = "product";
+
+
+                card.innerHTML = `
+
+                    <img
+                        class="product-image"
+                        src="${product.image}"
+                        alt="${product.name}"
+                    >
+
+
+                    <div class="product-info">
+
+                        <div class="product-name">
+
+                            ${product.name}
+
+                        </div>
+
+
+                        <div class="product-description">
+
+                            ${product.description}
+
+                        </div>
+
+
+                        <div class="price">
+
+                            ${product.price} TL
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                productsContainer.appendChild(card);
+
+            });
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
