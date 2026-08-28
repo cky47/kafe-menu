@@ -3,182 +3,376 @@
 <html lang="tr">
 
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
 <title>Melitta Coffee - Menü</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
 
-body {
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    background:
-        linear-gradient(rgba(45,28,18,.55),rgba(45,28,18,.55)),
-        url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1800&q=85");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    color: white;
-}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-.container {
-    width: 90%;
-    max-width: 650px;
-    margin: auto;
-    padding: 35px 0 50px;
-}
+    body {
 
-.back {
-    display: inline-block;
-    margin-bottom: 25px;
-    padding: 10px 17px;
-    background: rgba(255,255,255,.92);
-    color: #4b3022;
-    text-decoration: none;
-    border-radius: 12px;
-    font-weight: bold;
-}
+        min-height: 100vh;
 
-.title {
-    text-align: center;
-    margin-bottom: 32px;
-}
+        font-family: Arial, sans-serif;
 
-.title h1 {
-    font-family: Georgia, serif;
-    font-size: 39px;
-    color: #f4e4c8;
-    margin-bottom: 8px;
-}
+        background-image:
+            linear-gradient(
+                rgba(45, 28, 18, 0.55),
+                rgba(45, 28, 18, 0.55)
+            ),
+            url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1800&q=85");
 
-.title p {
-    color: #fff3df;
-    font-size: 17px;
-}
+        background-size: cover;
 
-.categories {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
+        background-position: center;
 
-.category {
-    min-height: 145px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    background: rgba(255,248,238,.95);
-    color: #4b3022;
-    text-decoration: none;
-    border-radius: 22px;
-    box-shadow: 0 9px 26px rgba(0,0,0,.25);
-}
+        background-attachment: fixed;
 
-.category-icon {
-    width: 55px;
-    height: 55px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #70513d;
-    border-radius: 17px;
-    font-size: 29px;
-}
+        color: white;
 
-.category-name {
-    font-size: 17px;
-    font-weight: bold;
-}
+    }
 
-.products {
-    display: none;
-}
+    .container {
 
-.products.active {
-    display: block;
-}
+        width: 90%;
 
-.product {
-    background: rgba(255,248,238,.96);
-    color: #4b3022;
-    border-radius: 18px;
-    padding: 12px;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    box-shadow: 0 8px 22px rgba(0,0,0,.22);
-}
+        max-width: 650px;
 
-.product-image {
-    width: 95px;
-    height: 95px;
-    object-fit: cover;
-    border-radius: 14px;
-    flex-shrink: 0;
-}
+        margin: auto;
 
-.product-info {
-    flex: 1;
-}
+        padding-top: 35px;
 
-.product-name {
-    font-family: Georgia, serif;
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
+        padding-bottom: 50px;
 
-.product-description {
-    color: #76594a;
-    font-size: 13px;
-    line-height: 1.4;
-    margin-bottom: 7px;
-}
+    }
 
-.product-price {
-    color: #70513d;
-    font-size: 17px;
-    font-weight: bold;
-}
+    .back {
 
-.empty {
-    background: rgba(255,248,238,.96);
-    color: #4b3022;
-    border-radius: 18px;
-    padding: 25px;
-    text-align: center;
-}
+        display: inline-block;
 
-@media (max-width: 500px) {
+        margin-bottom: 25px;
+
+        padding: 10px 17px;
+
+        background: rgba(255,255,255,0.92);
+
+        color: #4b3022;
+
+        text-decoration: none;
+
+        border-radius: 12px;
+
+        font-weight: bold;
+
+        font-size: 14px;
+
+    }
+
+    .title {
+
+        text-align: center;
+
+        margin-bottom: 32px;
+
+    }
+
+    .title h1 {
+
+        font-family: Georgia, serif;
+
+        font-size: 39px;
+
+        color: #f4e4c8;
+
+        text-shadow:
+            0 3px 8px rgba(0,0,0,0.6);
+
+        margin-bottom: 8px;
+
+    }
+
+    .title p {
+
+        color: #fff3df;
+
+        font-size: 17px;
+
+    }
+
+    .categories {
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 16px;
+
+    }
+
     .category {
-        min-height: 130px;
+
+        min-height: 145px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 12px;
+
+        background: rgba(255,248,238,0.95);
+
+        color: #4b3022;
+
+        text-decoration: none;
+
+        border-radius: 22px;
+
+        box-shadow:
+            0 9px 26px rgba(0,0,0,0.25);
+
+        transition: 0.25s;
+
+        cursor: pointer;
+
+    }
+
+    .category:hover {
+
+        transform: translateY(-5px);
+
+        background: white;
+
+    }
+
+    .category-icon {
+
+        width: 55px;
+
+        height: 55px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background: #70513d;
+
+        border-radius: 17px;
+
+        font-size: 29px;
+
     }
 
     .category-name {
-        font-size: 14px;
+
+        font-size: 17px;
+
+        font-weight: bold;
+
+    }
+
+    .products {
+
+        display: none;
+
+    }
+
+    .products.active {
+
+        display: block;
+
+    }
+
+    .product {
+
+        background: rgba(255,248,238,0.96);
+
+        color: #4b3022;
+
+        border-radius: 18px;
+
+        padding: 12px;
+
+        margin-bottom: 15px;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 14px;
+
+        box-shadow:
+            0 8px 22px rgba(0,0,0,0.22);
+
     }
 
     .product-image {
-        width: 75px;
-        height: 75px;
+
+        width: 95px;
+
+        height: 95px;
+
+        object-fit: cover;
+
+        border-radius: 14px;
+
+        flex-shrink: 0;
+
+        background: #ddd;
+
+    }
+
+    .product-info {
+
+        flex: 1;
+
     }
 
     .product-name {
-        font-size: 17px;
+
+        font-family: Georgia, serif;
+
+        font-size: 20px;
+
+        font-weight: bold;
+
+        margin-bottom: 5px;
+
     }
 
     .product-description {
-        font-size: 11px;
+
+        color: #76594a;
+
+        font-size: 13px;
+
+        line-height: 1.4;
+
+        margin-bottom: 7px;
+
     }
-}
+
+    .product-price {
+
+        color: #70513d;
+
+        font-size: 17px;
+
+        font-weight: bold;
+
+    }
+
+    .empty {
+
+        background: rgba(255,248,238,0.96);
+
+        color: #4b3022;
+
+        border-radius: 18px;
+
+        padding: 25px;
+
+        text-align: center;
+
+    }
+
+    @media (max-width: 500px) {
+
+        .container {
+
+            width: 92%;
+
+            padding-top: 25px;
+
+        }
+
+        .title h1 {
+
+            font-size: 32px;
+
+        }
+
+        .title p {
+
+            font-size: 15px;
+
+        }
+
+        .categories {
+
+            gap: 12px;
+
+        }
+
+        .category {
+
+            min-height: 130px;
+
+            border-radius: 19px;
+
+        }
+
+        .category-icon {
+
+            width: 48px;
+
+            height: 48px;
+
+            border-radius: 14px;
+
+            font-size: 25px;
+
+        }
+
+        .category-name {
+
+            font-size: 14px;
+
+        }
+
+        .product-image {
+
+            width: 75px;
+
+            height: 75px;
+
+        }
+
+        .product-name {
+
+            font-size: 17px;
+
+        }
+
+        .product-description {
+
+            font-size: 11px;
+
+        }
+
+        .product-price {
+
+            font-size: 15px;
+
+        }
+
+    }
+
 </style>
 
 </head>
@@ -187,18 +381,35 @@ body {
 
 <div class="container">
 
-<a href="index.html" class="back">
+<a href="index.html"
+   class="back"
+   id="backButton">
+
     ← Ana Sayfa
+
 </a>
 
 <div class="title">
-    <h1>Melitta Coffee</h1>
-    <p id="pageSubtitle">Menümüz</p>
+
+    <h1>
+        Melitta Coffee
+    </h1>
+
+    <p id="pageSubtitle">
+        Menümüz
+    </p>
+
 </div>
 
-<div class="categories" id="categories"></div>
+<div
+    class="categories"
+    id="categories">
+</div>
 
-<div class="products" id="products"></div>
+<div
+    class="products"
+    id="products">
+</div>
 
 </div>
 
@@ -206,60 +417,117 @@ body {
 
 <script>
 
-const params = new URLSearchParams(window.location.search);
-const selectedCategoryId = params.get("kategori");
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
 
-const categoriesContainer = document.getElementById("categories");
-const productsContainer = document.getElementById("products");
-const pageSubtitle = document.getElementById("pageSubtitle");
+const selectedCategoryId =
+    params.get("kategori");
+
+const categoriesContainer =
+    document.getElementById(
+        "categories"
+    );
+
+const productsContainer =
+    document.getElementById(
+        "products"
+    );
+
+const pageSubtitle =
+    document.getElementById(
+        "pageSubtitle"
+    );
+
+const backButton =
+    document.getElementById(
+        "backButton"
+    );
 
 
 function showCategories() {
 
     categoriesContainer.innerHTML = "";
 
-    categoriesContainer.style.display = "grid";
+    categoriesContainer.style.display =
+        "grid";
 
-    productsContainer.classList.remove("active");
+    productsContainer.classList.remove(
+        "active"
+    );
 
-    pageSubtitle.textContent = "Menümüz";
+    pageSubtitle.textContent =
+        "Menümüz";
 
-    menuData.categories.forEach(function(category) {
+    backButton.href =
+        "index.html";
 
-        const link = document.createElement("a");
+    backButton.textContent =
+        "← Ana Sayfa";
 
-        link.className = "category";
+    menuData.categories.forEach(
+        function(category) {
 
-        link.href =
-            "menu.html?kategori=" +
-            encodeURIComponent(category.id);
+            const link =
+                document.createElement(
+                    "a"
+                );
 
-        link.innerHTML =
-            '<div class="category-icon">' +
-            category.icon +
-            '</div>' +
-            '<div class="category-name">' +
-            category.name +
-            '</div>';
+            link.className =
+                "category";
 
-        categoriesContainer.appendChild(link);
-    });
+            link.href =
+                "menu.html?kategori=" +
+                encodeURIComponent(
+                    category.id
+                );
+
+            link.innerHTML =
+                '<div class="category-icon">' +
+                category.icon +
+                '</div>' +
+
+                '<div class="category-name">' +
+                category.name +
+                '</div>';
+
+            categoriesContainer.appendChild(
+                link
+            );
+
+        }
+    );
 }
 
 
 function showProducts(category) {
 
-    categoriesContainer.style.display = "none";
+    categoriesContainer.style.display =
+        "none";
 
-    productsContainer.classList.add("active");
+    productsContainer.classList.add(
+        "active"
+    );
 
-    pageSubtitle.textContent = category.name;
+    pageSubtitle.textContent =
+        category.name;
 
-    productsContainer.innerHTML = "";
+    backButton.href =
+        "menu.html";
 
-    const list = menuData.products[category.id] || [];
+    backButton.textContent =
+        "← Kategoriler";
 
-    if (list.length === 0) {
+    productsContainer.innerHTML =
+        "";
+
+    const products =
+        menuData.products[
+            category.id
+        ] || [];
+
+    if (products.length === 0) {
 
         productsContainer.innerHTML =
             '<div class="empty">' +
@@ -269,50 +537,71 @@ function showProducts(category) {
         return;
     }
 
-    list.forEach(function(product) {
+    products.forEach(
+        function(product) {
 
-        const item = document.createElement("div");
+            const item =
+                document.createElement(
+                    "div"
+                );
 
-        item.className = "product";
+            item.className =
+                "product";
 
-        item.innerHTML =
-            '<img class="product-image" src="' +
-            product.image +
-            '" alt="' +
-            product.name +
-            '">' +
+            item.innerHTML =
+                '<img ' +
+                'class="product-image" ' +
+                'src="' +
+                (product.image || "") +
+                '" ' +
+                'alt="' +
+                product.name +
+                '">' +
 
-            '<div class="product-info">' +
+                '<div class="product-info">' +
 
-            '<div class="product-name">' +
-            product.name +
-            '</div>' +
+                '<div class="product-name">' +
+                product.name +
+                '</div>' +
 
-            '<div class="product-description">' +
-            product.description +
-            '</div>' +
+                '<div class="product-description">' +
+                product.description +
+                '</div>' +
 
-            '<div class="product-price">' +
-            product.price +
-            ' TL</div>' +
+                '<div class="product-price">' +
+                product.price +
+                ' TL' +
+                '</div>' +
 
-            '</div>';
+                '</div>';
 
-        productsContainer.appendChild(item);
-    });
+            productsContainer.appendChild(
+                item
+            );
+
+        }
+    );
 }
 
 
 if (selectedCategoryId) {
 
-    const category = menuData.categories.find(function(item) {
-        return item.id === selectedCategoryId;
-    });
+    const category =
+        menuData.categories.find(
+            function(item) {
+                return item.id ===
+                    selectedCategoryId;
+            }
+        );
 
     if (category) {
+
         showProducts(category);
+
     } else {
+
         showCategories();
+
     }
 
 } else {
@@ -324,4 +613,5 @@ if (selectedCategoryId) {
 </script>
 
 </body>
+
 </html>
