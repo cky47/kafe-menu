@@ -1,3 +1,5 @@
+const GOOGLE_MENU_API = "https://script.google.com/macros/s/AKfycbzjnglJzykueGVEolHgYscNYZWaA8h7aw0WWq4EqHPAZaQaOHqXlPDA9Ri8mdgUPo0Czg/exec";
+
 const menuData = {
 categories: [
 {
@@ -72,3 +74,61 @@ products: {
 }
 
 };
+
+async function loadMenuFromGoogle() {
+try {
+const response = await fetch(GOOGLE_MENU_API);
+
+    if (!response.ok) {
+        throw new Error("Google bağlantısı başarısız.");
+    }
+
+    const data = await response.json();
+
+    if (!Array.isArray(data)) {
+        throw new Error("Geçersiz Google menü verisi.");
+    }
+
+    if (data.length === 0) {
+        console.log("Google Sheet boş. Varsayılan menü kullanılacak.");
+        return;
+    }
+
+    const newProducts = {
+        kahveler: [],
+        soguk_icecekler: [],
+        tatlilar: [],
+        kahvaltilar: [],
+        yiyecekler: [],
+        diger: []
+    };
+
+    data.forEach(function(item) {
+        if (!item.category) {
+            return;
+        }
+
+        if (!newProducts[item.category]) {
+            return;
+        }
+
+        newProducts[item.category].push({
+            id: item.productId || "",
+            name: item.name || "",
+            description: item.description || "",
+            price: Number(item.price) || 0,
+            image: item.image || ""
+        });
+    });
+
+    menuData.products = newProducts;
+
+    console.log("Google Sheets menüsü yüklendi.");
+
+} catch (error) {
+    console.error("Google menüsü alınamadı:", error);
+}
+
+}
+
+loadMenuFromGoogle();
