@@ -1,6 +1,6 @@
 const GOOGLE_MENU_API = "https://script.google.com/macros/s/AKfycbzjnglJzykueGVEolHgYscNYZWaA8h7aw0WWq4EqHPAZaQaOHqXlPDA9Ri8mdgUPo0Czg/exec";
 
-const menuData = {
+const defaultMenuData = {
 categories: [
 {
 id: "kahveler",
@@ -48,7 +48,7 @@ products: {
             name: "Cappuccino",
             description: "Yoğun espresso, sıcak süt ve bol süt köpüğü.",
             price: 140,
-            image: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=500&q=80"
+            image: "https://images.unsplash.com/photo-1572449043416-55f4685c9bb7?auto=format&fit=crop&w=500&q=80"
         },
         {
             id: "americano",
@@ -62,7 +62,7 @@ products: {
             name: "Espresso",
             description: "Yoğun aromalı klasik espresso.",
             price: 100,
-            image: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=500&q=80"
+            image: "https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?auto=format&fit=crop&w=500&q=80"
         }
     ],
 
@@ -75,9 +75,14 @@ products: {
 
 };
 
+let menuData = JSON.parse(JSON.stringify(defaultMenuData));
+
 async function loadMenuFromGoogle() {
 try {
-const response = await fetch(GOOGLE_MENU_API);
+const response = await fetch(GOOGLE_MENU_API, {
+method: "GET",
+cache: "no-store"
+});
 
     if (!response.ok) {
         throw new Error("Google bağlantısı başarısız.");
@@ -90,30 +95,38 @@ const response = await fetch(GOOGLE_MENU_API);
     }
 
     if (data.length === 0) {
-        console.log("Google Sheet boş. Varsayılan menü kullanılacak.");
-        return;
+        console.log("Google Sheet boş. Varsayılan menü kullanılıyor.");
+        return null;
     }
 
-    const newProducts = {
-        kahveler: [],
-        soguk_icecekler: [],
-        tatlilar: [],
-        kahvaltilar: [],
-        yiyecekler: [],
-        diger: []
+    const googleMenu = {
+        categories: JSON.parse(JSON.stringify(defaultMenuData.categories)),
+        products: {}
     };
+
+    googleMenu.categories.forEach(function(category) {
+        googleMenu.products[category.id] = [];
+    });
 
     data.forEach(function(item) {
         if (!item.category) {
             return;
         }
 
-        if (!newProducts[item.category]) {
-            return;
+        const categoryId = String(item.category).trim();
+
+        if (!googleMenu.products[categoryId]) {
+            googleMenu.products[categoryId] = [];
+
+            googleMenu.categories.push({
+                id: categoryId,
+                name: categoryId,
+                icon: "🍽️"
+            });
         }
 
-        newProducts[item.category].push({
-            id: item.productId || "",
+        googleMenu.products[categoryId].push({
+            id: item.productId || Date.now().toString(),
             name: item.name || "",
             description: item.description || "",
             price: Number(item.price) || 0,
@@ -121,14 +134,101 @@ const response = await fetch(GOOGLE_MENU_API);
         });
     });
 
-    menuData.products = newProducts;
-
-    console.log("Google Sheets menüsü yüklendi.");
+    return googleMenu;
 
 } catch (error) {
     console.error("Google menüsü alınamadı:", error);
+    return null;
 }
 
 }
 
-loadMenuFromGoogle();
+async function initializeMenu() {
+const googleMenu = await loadMenuFromGoogle();
+
+if (googleMenu) {
+    menuData = googleMenu;
+}
+
+if (typeof renderMenu === "function") {
+    renderMenu();
+}
+
+if (typeof showCategories === "function") {
+    showCategories();
+}
+
+console.log("Menü hazır.");
+
+}
+
+initializeMenu();
+
+async function saveMenuData() {
+try {
+const rows = [];
+
+    menuData.categories.forEach(function(category) {
+        const products = menuData.products[category.id] || [];
+
+        if (products.length === 0) {
+            rows.push({
+                category: category.id,
+                productId: "",
+                name: "",
+                description: "",
+                price: "",
+                image: ""
+            });
+
+            return;
+        }
+
+        products.forEach(function(product) {
+            rows.push({
+                category: category.id,
+                productId: product.id || "",
+                name: product.name || "",
+                description: product.description || "",
+                price: product.price || 0,
+                image: product.image || ""
+            });
+        });
+    });
+
+    const response = await fetch(GOOGLE_MENU_API, {
+        method: "POST",
+        headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(rows)
+    });
+
+    if (!response.ok) {
+        throw new Error("Google kayıt bağlantısı başarısız.");
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+        throw new Error(
+            result.error || "Menü kaydedilemedi."
+        );
+    }
+
+    console.log("Menü Google Sheets'e başarıyla kaydedildi.");
+
+    return true;
+
+} catch (error) {
+    console.error("Menü kaydetme hatası:", error);
+
+    alert(
+        "Menü kaydedilemedi.\n\n" +
+        "Google Apps Script bağlantısını kontrol et."
+    );
+
+    return false;
+}
+
+}
