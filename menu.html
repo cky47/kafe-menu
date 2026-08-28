@@ -43,10 +43,13 @@
     .container {
 
         width: 90%;
+
         max-width: 650px;
+
         margin: auto;
 
         padding-top: 35px;
+
         padding-bottom: 50px;
     }
 
@@ -148,11 +151,13 @@
     .category-icon {
 
         width: 55px;
+
         height: 55px;
 
         display: flex;
 
         align-items: center;
+
         justify-content: center;
 
         background: #70513d;
@@ -193,11 +198,6 @@
 
         box-shadow:
             0 8px 22px rgba(0,0,0,0.22);
-    }
-
-    .product-info {
-
-        width: 100%;
     }
 
     .product-name {
@@ -278,6 +278,7 @@
         .category-icon {
 
             width: 48px;
+
             height: 48px;
 
             border-radius: 14px;
@@ -331,6 +332,7 @@
 
 </a>
 
+
 <div class="title">
 
     <h1>
@@ -343,31 +345,74 @@
 
 </div>
 
+
 <div
     class="categories"
     id="categories">
+
 </div>
+
 
 <div
     class="products"
     id="products">
+
 </div>
 ```
 
 </div>
 
-<script src="script.js"></script>
-
 <script>
 
-const params =
-    new URLSearchParams(
-        window.location.search
-    );
 
-const selectedCategoryId =
-    params.get("kategori");
+// ========================================
+// KATEGORİLER
+// ========================================
 
+const categories = [
+
+    {
+        id: "kahveler",
+        name: "Kahveler",
+        icon: "☕"
+    },
+
+    {
+        id: "soguk_icecekler",
+        name: "Soğuk İçecekler",
+        icon: "🧊"
+    },
+
+    {
+        id: "tatlilar",
+        name: "Tatlılar",
+        icon: "🍰"
+    },
+
+    {
+        id: "kahvaltilar",
+        name: "Kahvaltılar",
+        icon: "🍳"
+    },
+
+    {
+        id: "yiyecekler",
+        name: "Yiyecekler",
+        icon: "🍔"
+    },
+
+    {
+        id: "diger",
+        name: "Diğer",
+        icon: "🥤"
+    }
+
+];
+
+
+// ========================================
+// ELEMENTLER
+// ========================================
 
 const categoriesContainer =
     document.getElementById(
@@ -390,6 +435,10 @@ const backButton =
     );
 
 
+// ========================================
+// KATEGORİLERİ GÖSTER
+// ========================================
+
 function showCategories() {
 
     categoriesContainer.innerHTML = "";
@@ -411,7 +460,7 @@ function showCategories() {
         "← Ana Sayfa";
 
 
-    menuData.categories.forEach(
+    categories.forEach(
         function(category) {
 
             const link =
@@ -428,17 +477,23 @@ function showCategories() {
                     category.id
                 );
 
+
             link.innerHTML = `
 
                 <div class="category-icon">
+
                     ${category.icon}
+
                 </div>
 
                 <div class="category-name">
+
                     ${category.name}
+
                 </div>
 
             `;
+
 
             categoriesContainer.appendChild(
                 link
@@ -449,6 +504,137 @@ function showCategories() {
 
 }
 
+
+// ========================================
+// GOOGLE SHEETS'TEN ÜRÜNLERİ AL
+// ========================================
+
+const GOOGLE_MENU_API =
+    "https://script.google.com/macros/s/AKfycbz5bfWz50_hUmHYZgIBllpeHAvWnceLkNJ81EPYga9z0qNHJ-T5zEDDksbZEdrrianGhw/exec";
+
+
+let googleProducts = {
+
+    kahveler: [],
+    soguk_icecekler: [],
+    tatlilar: [],
+    kahvaltilar: [],
+    yiyecekler: [],
+    diger: []
+
+};
+
+
+// ========================================
+// GOOGLE VERİSİNİ ÇEK
+// ========================================
+
+fetch(GOOGLE_MENU_API)
+
+    .then(
+        function(response) {
+
+            return response.json();
+
+        }
+    )
+
+    .then(
+        function(data) {
+
+            if (!Array.isArray(data)) {
+
+                return;
+
+            }
+
+
+            data.forEach(
+                function(item) {
+
+                    if (
+                        item.category &&
+                        googleProducts[
+                            item.category
+                        ]
+                    ) {
+
+                        googleProducts[
+                            item.category
+                        ].push({
+
+                            id:
+                                item.productId || "",
+
+                            name:
+                                item.name || "",
+
+                            description:
+                                item.description || "",
+
+                            price:
+                                item.price || 0
+
+                        });
+
+                    }
+
+                }
+            );
+
+
+            console.log(
+                "Google menü verileri yüklendi."
+            );
+
+
+            const selectedCategoryId =
+                new URLSearchParams(
+                    window.location.search
+                ).get("kategori");
+
+
+            if (selectedCategoryId) {
+
+                const category =
+                    categories.find(
+                        function(item) {
+
+                            return item.id ===
+                                selectedCategoryId;
+
+                        }
+                    );
+
+
+                if (category) {
+
+                    showProducts(
+                        category
+                    );
+
+                }
+
+            }
+
+        }
+    )
+
+    .catch(
+        function(error) {
+
+            console.error(
+                "Google menü bağlantı hatası:",
+                error
+            );
+
+        }
+    );
+
+
+// ========================================
+// ÜRÜNLERİ GÖSTER
+// ========================================
 
 function showProducts(category) {
 
@@ -470,7 +656,7 @@ function showProducts(category) {
 
 
     const products =
-        menuData.products[
+        googleProducts[
             category.id
         ] || [];
 
@@ -511,19 +697,21 @@ function showProducts(category) {
 
             item.innerHTML = `
 
-                <div class="product-info">
+                <div class="product-name">
 
-                    <div class="product-name">
-                        ${product.name}
-                    </div>
+                    ${product.name}
 
-                    <div class="product-description">
-                        ${product.description}
-                    </div>
+                </div>
 
-                    <div class="product-price">
-                        ${product.price} TL
-                    </div>
+                <div class="product-description">
+
+                    ${product.description}
+
+                </div>
+
+                <div class="product-price">
+
+                    ${product.price} TL
 
                 </div>
 
@@ -540,30 +728,32 @@ function showProducts(category) {
 }
 
 
-function renderMenu() {
+// ========================================
+// SAYFA BAŞLANGICI
+// ========================================
 
-    if (selectedCategoryId) {
-
-        const category =
-            menuData.categories.find(
-                function(item) {
-
-                    return item.id ===
-                        selectedCategoryId;
-
-                }
-            );
+const selectedCategoryId =
+    new URLSearchParams(
+        window.location.search
+    ).get("kategori");
 
 
-        if (category) {
+if (selectedCategoryId) {
 
-            showProducts(category);
+    const category =
+        categories.find(
+            function(item) {
 
-        } else {
+                return item.id ===
+                    selectedCategoryId;
 
-            showCategories();
+            }
+        );
 
-        }
+
+    if (category) {
+
+        showProducts(category);
 
     } else {
 
@@ -571,10 +761,11 @@ function renderMenu() {
 
     }
 
+} else {
+
+    showCategories();
+
 }
-
-
-renderMenu();
 
 </script>
 
