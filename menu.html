@@ -1,19 +1,13 @@
 <!DOCTYPE html>
 
 <html lang="tr">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melitta Coffee - Menü</title>
 
 ```
-<meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>Melitta Coffee - Menü</title>
-
 <style>
-
     * {
         margin: 0;
         padding: 0;
@@ -21,298 +15,194 @@
     }
 
     body {
-
         min-height: 100vh;
-
         font-family: Arial, sans-serif;
-
-        background-image:
+        background:
             linear-gradient(
                 rgba(45, 28, 18, 0.55),
                 rgba(45, 28, 18, 0.55)
             ),
             url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1800&q=85");
-
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
-
         color: white;
     }
 
     .container {
-
         width: 90%;
-
         max-width: 650px;
-
         margin: auto;
-
-        padding-top: 35px;
-
-        padding-bottom: 50px;
+        padding: 35px 0 50px;
     }
 
     .back {
-
         display: inline-block;
-
         margin-bottom: 25px;
-
         padding: 10px 17px;
-
         background: rgba(255,255,255,0.92);
-
         color: #4b3022;
-
         text-decoration: none;
-
         border-radius: 12px;
-
         font-weight: bold;
-
         font-size: 14px;
     }
 
     .title {
-
         text-align: center;
-
         margin-bottom: 32px;
     }
 
     .title h1 {
-
         font-family: Georgia, serif;
-
         font-size: 39px;
-
         color: #f4e4c8;
-
-        text-shadow:
-            0 3px 8px rgba(0,0,0,0.6);
-
+        text-shadow: 0 3px 8px rgba(0,0,0,0.6);
         margin-bottom: 8px;
     }
 
     .title p {
-
         color: #fff3df;
-
         font-size: 17px;
     }
 
     .categories {
-
         display: grid;
-
         grid-template-columns: 1fr 1fr;
-
         gap: 16px;
     }
 
     .category {
-
         min-height: 145px;
-
         display: flex;
-
         flex-direction: column;
-
         align-items: center;
-
         justify-content: center;
-
         gap: 12px;
-
         background: rgba(255,248,238,0.95);
-
         color: #4b3022;
-
         text-decoration: none;
-
         border-radius: 22px;
-
-        box-shadow:
-            0 9px 26px rgba(0,0,0,0.25);
-
+        box-shadow: 0 9px 26px rgba(0,0,0,0.25);
         transition: 0.25s;
-
-        cursor: pointer;
     }
 
     .category:hover {
-
         transform: translateY(-5px);
-
         background: white;
     }
 
     .category-icon {
-
         width: 55px;
-
         height: 55px;
-
         display: flex;
-
         align-items: center;
-
         justify-content: center;
-
         background: #70513d;
-
         border-radius: 17px;
-
         font-size: 29px;
     }
 
     .category-name {
-
         font-size: 17px;
-
         font-weight: bold;
     }
 
     .products {
-
         display: none;
     }
 
     .products.active {
-
         display: block;
     }
 
     .product {
-
         background: rgba(255,248,238,0.96);
-
         color: #4b3022;
-
         border-radius: 18px;
-
         padding: 20px;
-
         margin-bottom: 15px;
-
-        box-shadow:
-            0 8px 22px rgba(0,0,0,0.22);
+        box-shadow: 0 8px 22px rgba(0,0,0,0.22);
     }
 
     .product-name {
-
         font-family: Georgia, serif;
-
         font-size: 21px;
-
         font-weight: bold;
-
         margin-bottom: 7px;
     }
 
     .product-description {
-
         color: #76594a;
-
         font-size: 13px;
-
         line-height: 1.5;
-
         margin-bottom: 10px;
     }
 
     .product-price {
-
         color: #70513d;
-
         font-size: 18px;
-
         font-weight: bold;
     }
 
     .empty {
-
         background: rgba(255,248,238,0.96);
-
         color: #4b3022;
-
         border-radius: 18px;
-
         padding: 25px;
-
         text-align: center;
     }
 
     @media (max-width: 500px) {
-
         .container {
-
             width: 92%;
-
             padding-top: 25px;
         }
 
         .title h1 {
-
             font-size: 32px;
         }
 
         .title p {
-
             font-size: 15px;
         }
 
         .categories {
-
             gap: 12px;
         }
 
         .category {
-
             min-height: 130px;
-
             border-radius: 19px;
         }
 
         .category-icon {
-
             width: 48px;
-
             height: 48px;
-
             border-radius: 14px;
-
             font-size: 25px;
         }
 
         .category-name {
-
             font-size: 14px;
         }
 
         .product {
-
             padding: 17px;
         }
 
         .product-name {
-
             font-size: 18px;
         }
 
         .product-description {
-
             font-size: 12px;
         }
 
         .product-price {
-
             font-size: 16px;
         }
-
     }
-
 </style>
 ```
 
@@ -323,442 +213,201 @@
 <div class="container">
 
 ```
-<a
-    href="index.html"
-    class="back"
-    id="backButton">
-
+<a href="index.html" class="back">
     ← Ana Sayfa
-
 </a>
 
-
 <div class="title">
-
-    <h1>
-        Melitta Coffee
-    </h1>
-
-    <p id="pageSubtitle">
-        Menümüz
-    </p>
-
+    <h1>Melitta Coffee</h1>
+    <p id="pageSubtitle">Menümüz</p>
 </div>
 
+<div class="categories" id="categories"></div>
 
-<div
-    class="categories"
-    id="categories">
-
-</div>
-
-
-<div
-    class="products"
-    id="products">
-
-</div>
+<div class="products" id="products"></div>
 ```
 
 </div>
 
 <script>
 
-
-// ========================================
-// KATEGORİLER
-// ========================================
-
 const categories = [
-
     {
         id: "kahveler",
         name: "Kahveler",
         icon: "☕"
     },
-
     {
         id: "soguk_icecekler",
         name: "Soğuk İçecekler",
         icon: "🧊"
     },
-
     {
         id: "tatlilar",
         name: "Tatlılar",
         icon: "🍰"
     },
-
     {
         id: "kahvaltilar",
         name: "Kahvaltılar",
         icon: "🍳"
     },
-
     {
         id: "yiyecekler",
         name: "Yiyecekler",
         icon: "🍔"
     },
-
     {
         id: "diger",
         name: "Diğer",
         icon: "🥤"
     }
-
 ];
 
-
-// ========================================
-// ELEMENTLER
-// ========================================
-
-const categoriesContainer =
-    document.getElementById(
-        "categories"
-    );
-
-const productsContainer =
-    document.getElementById(
-        "products"
-    );
-
-const pageSubtitle =
-    document.getElementById(
-        "pageSubtitle"
-    );
-
-const backButton =
-    document.getElementById(
-        "backButton"
-    );
-
-
-// ========================================
-// KATEGORİLERİ GÖSTER
-// ========================================
-
-function showCategories() {
-
-    categoriesContainer.innerHTML = "";
-
-    categoriesContainer.style.display =
-        "grid";
-
-    productsContainer.classList.remove(
-        "active"
-    );
-
-    pageSubtitle.textContent =
-        "Menümüz";
-
-    backButton.href =
-        "index.html";
-
-    backButton.textContent =
-        "← Ana Sayfa";
-
-
-    categories.forEach(
-        function(category) {
-
-            const link =
-                document.createElement(
-                    "a"
-                );
-
-            link.className =
-                "category";
-
-            link.href =
-                "menu.html?kategori=" +
-                encodeURIComponent(
-                    category.id
-                );
-
-
-            link.innerHTML = `
-
-                <div class="category-icon">
-
-                    ${category.icon}
-
-                </div>
-
-                <div class="category-name">
-
-                    ${category.name}
-
-                </div>
-
-            `;
-
-
-            categoriesContainer.appendChild(
-                link
-            );
-
+const products = {
+    kahveler: [
+        {
+            name: "Latte",
+            description: "Espresso, sıcak süt ve süt köpüğü.",
+            price: 150
+        },
+        {
+            name: "Cappuccino",
+            description: "Yoğun espresso, sıcak süt ve bol süt köpüğü.",
+            price: 140
+        },
+        {
+            name: "Americano",
+            description: "Espresso ve sıcak su ile hazırlanan klasik kahve.",
+            price: 120
+        },
+        {
+            name: "Espresso",
+            description: "Yoğun aromalı klasik espresso.",
+            price: 100
         }
-    );
+    ],
 
-}
-
-
-// ========================================
-// GOOGLE SHEETS'TEN ÜRÜNLERİ AL
-// ========================================
-
-const GOOGLE_MENU_API =
-    "https://script.google.com/macros/s/AKfycbz5bfWz50_hUmHYZgIBllpeHAvWnceLkNJ81EPYga9z0qNHJ-T5zEDDksbZEdrrianGhw/exec";
-
-
-let googleProducts = {
-
-    kahveler: [],
     soguk_icecekler: [],
     tatlilar: [],
     kahvaltilar: [],
     yiyecekler: [],
     diger: []
-
 };
 
+const categoriesContainer =
+    document.getElementById("categories");
 
-// ========================================
-// GOOGLE VERİSİNİ ÇEK
-// ========================================
+const productsContainer =
+    document.getElementById("products");
 
-fetch(GOOGLE_MENU_API)
-
-    .then(
-        function(response) {
-
-            return response.json();
-
-        }
-    )
-
-    .then(
-        function(data) {
-
-            if (!Array.isArray(data)) {
-
-                return;
-
-            }
+const pageSubtitle =
+    document.getElementById("pageSubtitle");
 
 
-            data.forEach(
-                function(item) {
+function showCategories() {
 
-                    if (
-                        item.category &&
-                        googleProducts[
-                            item.category
-                        ]
-                    ) {
+    categoriesContainer.style.display = "grid";
 
-                        googleProducts[
-                            item.category
-                        ].push({
+    productsContainer.classList.remove("active");
 
-                            id:
-                                item.productId || "",
+    pageSubtitle.textContent = "Menümüz";
 
-                            name:
-                                item.name || "",
+    categoriesContainer.innerHTML = "";
 
-                            description:
-                                item.description || "",
+    categories.forEach(function(category) {
 
-                            price:
-                                item.price || 0
+        const link =
+            document.createElement("a");
 
-                        });
+        link.className = "category";
 
-                    }
+        link.href =
+            "menu.html?kategori=" +
+            encodeURIComponent(category.id);
 
-                }
-            );
-
-
-            console.log(
-                "Google menü verileri yüklendi."
-            );
-
-
-            const selectedCategoryId =
-                new URLSearchParams(
-                    window.location.search
-                ).get("kategori");
-
-
-            if (selectedCategoryId) {
-
-                const category =
-                    categories.find(
-                        function(item) {
-
-                            return item.id ===
-                                selectedCategoryId;
-
-                        }
-                    );
-
-
-                if (category) {
-
-                    showProducts(
-                        category
-                    );
-
-                }
-
-            }
-
-        }
-    )
-
-    .catch(
-        function(error) {
-
-            console.error(
-                "Google menü bağlantı hatası:",
-                error
-            );
-
-        }
-    );
-
-
-// ========================================
-// ÜRÜNLERİ GÖSTER
-// ========================================
-
-function showProducts(category) {
-
-    categoriesContainer.style.display =
-        "none";
-
-    productsContainer.classList.add(
-        "active"
-    );
-
-    pageSubtitle.textContent =
-        category.name;
-
-    backButton.href =
-        "menu.html";
-
-    backButton.textContent =
-        "← Kategoriler";
-
-
-    const products =
-        googleProducts[
-            category.id
-        ] || [];
-
-
-    productsContainer.innerHTML =
-        "";
-
-
-    if (products.length === 0) {
-
-        productsContainer.innerHTML = `
-
-            <div class="empty">
-
-                Bu kategoride henüz
-                ürün bulunmuyor.
-
+        link.innerHTML = `
+            <div class="category-icon">
+                ${category.icon}
             </div>
 
+            <div class="category-name">
+                ${category.name}
+            </div>
         `;
 
-        return;
-
-    }
-
-
-    products.forEach(
-        function(product) {
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-            item.className =
-                "product";
-
-
-            item.innerHTML = `
-
-                <div class="product-name">
-
-                    ${product.name}
-
-                </div>
-
-                <div class="product-description">
-
-                    ${product.description}
-
-                </div>
-
-                <div class="product-price">
-
-                    ${product.price} TL
-
-                </div>
-
-            `;
-
-
-            productsContainer.appendChild(
-                item
-            );
-
-        }
-    );
-
+        categoriesContainer.appendChild(link);
+    });
 }
 
 
-// ========================================
-// SAYFA BAŞLANGICI
-// ========================================
+function showProducts(category) {
 
-const selectedCategoryId =
+    categoriesContainer.style.display = "none";
+
+    productsContainer.classList.add("active");
+
+    pageSubtitle.textContent = category.name;
+
+    productsContainer.innerHTML = "";
+
+    const list =
+        products[category.id] || [];
+
+    if (list.length === 0) {
+
+        productsContainer.innerHTML = `
+            <div class="empty">
+                Bu kategoride henüz ürün bulunmuyor.
+            </div>
+        `;
+
+        return;
+    }
+
+    list.forEach(function(product) {
+
+        const item =
+            document.createElement("div");
+
+        item.className = "product";
+
+        item.innerHTML = `
+            <div class="product-name">
+                ${product.name}
+            </div>
+
+            <div class="product-description">
+                ${product.description}
+            </div>
+
+            <div class="product-price">
+                ${product.price} TL
+            </div>
+        `;
+
+        productsContainer.appendChild(item);
+    });
+}
+
+
+const selectedCategory =
     new URLSearchParams(
         window.location.search
     ).get("kategori");
 
 
-if (selectedCategoryId) {
+if (selectedCategory) {
 
     const category =
-        categories.find(
-            function(item) {
-
-                return item.id ===
-                    selectedCategoryId;
-
-            }
-        );
-
+        categories.find(function(item) {
+            return item.id === selectedCategory;
+        });
 
     if (category) {
-
         showProducts(category);
-
     } else {
-
         showCategories();
-
     }
 
 } else {
@@ -770,5 +419,4 @@ if (selectedCategoryId) {
 </script>
 
 </body>
-
 </html>
