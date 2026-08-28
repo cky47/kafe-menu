@@ -1,586 +1,320 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Melitta Coffee - Menü Yönetimi</title>
-
-
-    <style>
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-
-        body {
-
-            min-height: 100vh;
-
-            font-family: Arial, sans-serif;
-
-            background:
-                linear-gradient(
-                    rgba(45, 28, 18, 0.90),
-                    rgba(45, 28, 18, 0.90)
-                ),
-                url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1800&q=85");
-
-            background-size: cover;
-
-            background-position: center;
-
-            color: white;
-
-        }
-
-
-        .container {
-
-            width: 90%;
-
-            max-width: 700px;
-
-            margin: auto;
-
-            padding: 30px 0 50px;
-
-        }
-
-
-        /* GERİ */
-
-        .back {
-
-            display: inline-block;
-
-            margin-bottom: 25px;
-
-            padding: 9px 16px;
-
-            background: white;
-
-            color: #4b3022;
-
-            text-decoration: none;
-
-            border-radius: 11px;
-
-            font-weight: bold;
-
-            font-size: 14px;
-
-        }
-
-
-        /* BAŞLIK */
-
-        h1 {
-
-            text-align: center;
-
-            font-family: Georgia, serif;
-
-            color: #f4e4c8;
-
-            margin-bottom: 8px;
-
-        }
-
-
-        .subtitle {
-
-            text-align: center;
-
-            color: #eadbc5;
-
-            margin-bottom: 30px;
-
-        }
-
-
-        /* KATEGORİ */
-
-        .category {
-
-            background: rgba(255,248,238,0.96);
-
-            color: #4b3022;
-
-            padding: 15px;
-
-            border-radius: 17px;
-
-            margin-bottom: 13px;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 13px;
-
-        }
-
-
-        .icon {
-
-            width: 48px;
-
-            height: 48px;
-
-            background: #70513d;
-
-            color: white;
-
-            border-radius: 14px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            font-size: 24px;
-
-            flex-shrink: 0;
-
-        }
-
-
-        .category-info {
-
-            flex: 1;
-
-            min-width: 0;
-
-        }
-
-
-        .category-name {
-
-            font-family: Georgia, serif;
-
-            font-size: 18px;
-
-            font-weight: bold;
-
-        }
-
-
-        .category-buttons {
-
-            display: flex;
-
-            gap: 6px;
-
-            flex-wrap: wrap;
-
-            justify-content: flex-end;
-
-        }
-
-
-        .products-btn,
-        .edit,
-        .delete {
-
-            border: none;
-
-            padding: 8px 10px;
-
-            border-radius: 9px;
-
-            cursor: pointer;
-
-            font-weight: bold;
-
-        }
-
-
-        .products-btn {
-
-            background: #5b8062;
-
-            color: white;
-
-        }
-
-
-        .edit {
-
-            background: #70513d;
-
-            color: white;
-
-        }
-
-
-        .delete {
-
-            background: #ead1c7;
-
-            color: #7a3020;
-
-        }
-
-
-        /* EKLE */
-
-        .add {
-
-            width: 100%;
-
-            margin-top: 10px;
-
-            padding: 16px;
-
-            border: none;
-
-            border-radius: 15px;
-
-            background: #f4e4c8;
-
-            color: #4b3022;
-
-            font-size: 16px;
-
-            font-weight: bold;
-
-            cursor: pointer;
-
-        }
-
-
-        .add:hover {
-
-            background: white;
-
-        }
-
-
-        /* BOŞ */
-
-        .empty {
-
-            text-align: center;
-
-            padding: 25px;
-
-            background: rgba(255,248,238,0.96);
-
-            color: #4b3022;
-
-            border-radius: 15px;
-
-        }
-
-
-        /* =================================
-           MODAL
-        ================================= */
-
-        .modal {
-
-            display: none;
-
-            position: fixed;
-
-            inset: 0;
-
-            background: rgba(0,0,0,0.72);
-
-            align-items: center;
-
-            justify-content: center;
-
-            padding: 20px;
-
-            z-index: 1000;
-
-        }
-
-
-        .modal.active {
-
-            display: flex;
-
-        }
-
-
-        .form {
-
-            width: 100%;
-
-            max-width: 450px;
-
-            background: #fff8ee;
-
-            color: #4b3022;
-
-            border-radius: 20px;
-
-            padding: 25px;
-
-            box-shadow:
-                0 15px 50px rgba(0,0,0,0.35);
-
-        }
-
-
-        .form h2 {
-
-            text-align: center;
-
-            font-family: Georgia, serif;
-
-            margin-bottom: 22px;
-
-        }
-
-
-        .field {
-
-            margin-bottom: 18px;
-
-        }
-
-
-        .field label {
-
-            display: block;
-
-            margin-bottom: 7px;
-
-            font-size: 14px;
-
-            font-weight: bold;
-
-        }
-
-
-        .field input {
-
-            width: 100%;
-
-            padding: 12px;
-
-            border: 1px solid #d5c5b5;
-
-            border-radius: 10px;
-
-            font-size: 15px;
-
-            outline: none;
-
-        }
-
-
-        .field input:focus {
-
-            border-color: #70513d;
-
-        }
-
-
-        .emoji-row {
-
-            display: flex;
-
-            gap: 8px;
-
-            flex-wrap: wrap;
-
-            margin-top: 8px;
-
-        }
-
-
-        .emoji {
-
-            width: 42px;
-
-            height: 42px;
-
-            border: none;
-
-            border-radius: 10px;
-
-            background: #eadfce;
-
-            cursor: pointer;
-
-            font-size: 22px;
-
-        }
-
-
-        .emoji:hover {
-
-            background: #d9c8b5;
-
-        }
-
-
-        .selected-emoji {
-
-            background: #70513d;
-
-        }
-
-
-        .form-buttons {
-
-            display: flex;
-
-            gap: 10px;
-
-            margin-top: 22px;
-
-        }
-
-
-        .save-button,
-        .cancel-button {
-
-            flex: 1;
-
-            border: none;
-
-            padding: 14px;
-
-            border-radius: 11px;
-
-            cursor: pointer;
-
-            font-size: 15px;
-
-            font-weight: bold;
-
-        }
-
-
-        .save-button {
-
-            background: #70513d;
-
-            color: white;
-
-        }
-
-
-        .cancel-button {
-
-            background: #e5d7ca;
-
-            color: #4b3022;
-
-        }
-
-
-        @media (max-width: 600px) {
-
-            .category {
-
-                align-items: flex-start;
-
-            }
-
-
-            .category-buttons {
-
-                flex-direction: column;
-
-            }
-
-
-            .products-btn,
-            .edit,
-            .delete {
-
-                width: 100%;
-
-            }
-
-        }
-
-    </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Melitta Coffee - Menü Yönetimi</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background:
+        linear-gradient(
+            rgba(45, 28, 18, 0.90),
+            rgba(45, 28, 18, 0.90)
+        ),
+        url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1800&q=85");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+}
+
+.container {
+    width: 90%;
+    max-width: 700px;
+    margin: auto;
+    padding: 30px 0 50px;
+}
+
+.back {
+    display: inline-block;
+    margin-bottom: 25px;
+    padding: 9px 16px;
+    background: white;
+    color: #4b3022;
+    text-decoration: none;
+    border-radius: 11px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+h1 {
+    text-align: center;
+    font-family: Georgia, serif;
+    color: #f4e4c8;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #eadbc5;
+    margin-bottom: 30px;
+}
+
+.category {
+    background: rgba(255,248,238,0.96);
+    color: #4b3022;
+    padding: 15px;
+    border-radius: 17px;
+    margin-bottom: 13px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.20);
+}
+
+.icon {
+    width: 48px;
+    height: 48px;
+    background: #70513d;
+    color: white;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.category-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.category-name {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.category-buttons {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.products-btn,
+.edit,
+.delete {
+    border: none;
+    padding: 8px 10px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.products-btn {
+    background: #5b8062;
+    color: white;
+}
+
+.edit {
+    background: #70513d;
+    color: white;
+}
+
+.delete {
+    background: #ead1c7;
+    color: #7a3020;
+}
+
+.products-btn:hover,
+.edit:hover,
+.delete:hover {
+    opacity: 0.85;
+}
+
+.add {
+    width: 100%;
+    margin-top: 10px;
+    padding: 16px;
+    border: none;
+    border-radius: 15px;
+    background: #f4e4c8;
+    color: #4b3022;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.add:hover {
+    background: white;
+}
+
+.empty {
+    text-align: center;
+    padding: 25px;
+    background: rgba(255,248,238,0.96);
+    color: #4b3022;
+    border-radius: 15px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.72);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.form {
+    width: 100%;
+    max-width: 450px;
+    background: #fff8ee;
+    color: #4b3022;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.35);
+}
+
+.form h2 {
+    text-align: center;
+    font-family: Georgia, serif;
+    margin-bottom: 22px;
+}
+
+.field {
+    margin-bottom: 18px;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.field input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d5c5b5;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+}
+
+.field input:focus {
+    border-color: #70513d;
+}
+
+.emoji-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.emoji {
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 10px;
+    background: #eadfce;
+    cursor: pointer;
+    font-size: 22px;
+}
+
+.emoji:hover {
+    background: #d9c8b5;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.save-button,
+.cancel-button {
+    flex: 1;
+    border: none;
+    padding: 14px;
+    border-radius: 11px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.save-button {
+    background: #70513d;
+    color: white;
+}
+
+.save-button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.cancel-button {
+    background: #e5d7ca;
+    color: #4b3022;
+}
+
+@media (max-width: 600px) {
+    .category {
+        align-items: flex-start;
+    }
+
+    .category-buttons {
+        flex-direction: column;
+    }
+
+    .products-btn,
+    .edit,
+    .delete {
+        width: 100%;
+    }
+}
+</style>
 </head>
-
 
 <body>
 
-
 <div class="container">
 
-
-    <!-- GERİ -->
-
-    <a href="admin.html"
-       class="back">
-
+    <a href="admin.html" class="back">
         ← Yönetim Paneli
-
     </a>
-
-
-    <!-- BAŞLIK -->
 
     <h1>
         Menü Yönetimi
     </h1>
 
-
     <p class="subtitle">
         Kategori ve ürünlerini buradan yönet
     </p>
 
-
-    <!-- KATEGORİLER -->
-
     <div id="categories"></div>
 
-
-    <!-- YENİ KATEGORİ -->
-
-    <button
-        class="add"
-        onclick="openAddForm()">
-
+    <button class="add" onclick="openAddForm()">
         + Yeni Kategori Ekle
-
     </button>
-
 
 </div>
 
-
-
-<!-- =====================================
-     KATEGORİ FORMU
-===================================== -->
-
-<div
-    class="modal"
-    id="categoryModal">
-
+<div class="modal" id="categoryModal">
 
     <div class="form">
-
 
         <h2 id="formTitle">
             Yeni Kategori
         </h2>
-
-
-        <!-- KATEGORİ ADI -->
 
         <div class="field">
 
@@ -595,15 +329,11 @@
 
         </div>
 
-
-        <!-- EMOJİ -->
-
         <div class="field">
 
             <label>
                 Kategori simgesi
             </label>
-
 
             <input
                 type="text"
@@ -611,545 +341,325 @@
                 maxlength="2"
                 placeholder="☕">
 
-
             <div class="emoji-row">
 
-
-                <button
-                    class="emoji"
-                    type="button"
-                    onclick="selectEmoji('☕')">
-
-                    ☕
-                </button>
-
-
-                <button
-                    class="emoji"
-                    type="button"
-                    onclick="selectEmoji('🥤')">
-
-                    🥤
-                </button>
-
-
-                <button
-                    class="emoji"
-                    type="button"
-                    onclick="selectEmoji('🍰')">
-
-                    🍰
-                </button>
-
-
-                <button
-                    class="emoji"
-                    type="button"
-                    onclick="selectEmoji('🍔')">
-
-                    🍔
-                </button>
-
-
-                <button
-                    class="emoji"
-                    type="button"
-                    onclick="selectEmoji('🥐')">
-
-                    🥐
-                </button>
-
-
-                <button
-                    class="emoji"
-                    type="button"
-                    onclick="selectEmoji('🍕')">
-
-                    🍕
-                </button>
-
-
-                <button
-                    class="emoji"
-                    type="button"
-                    onclick="selectEmoji('🍹')">
-
-                    🍹
-                </button>
-
-
-                <button
-                    class="emoji"
-                    type="button"
-                    onclick="selectEmoji('🍨')">
-
-                    🍨
-                </button>
-
+                <button class="emoji" type="button" onclick="selectEmoji('☕')">☕</button>
+                <button class="emoji" type="button" onclick="selectEmoji('🥤')">🥤</button>
+                <button class="emoji" type="button" onclick="selectEmoji('🍰')">🍰</button>
+                <button class="emoji" type="button" onclick="selectEmoji('🍔')">🍔</button>
+                <button class="emoji" type="button" onclick="selectEmoji('🥐')">🥐</button>
+                <button class="emoji" type="button" onclick="selectEmoji('🍕')">🍕</button>
+                <button class="emoji" type="button" onclick="selectEmoji('🍹')">🍹</button>
+                <button class="emoji" type="button" onclick="selectEmoji('🍨')">🍨</button>
 
             </div>
 
         </div>
 
-
-        <!-- BUTONLAR -->
-
         <div class="form-buttons">
-
 
             <button
                 class="cancel-button"
+                type="button"
                 onclick="closeForm()">
-
                 Vazgeç
-
             </button>
-
 
             <button
                 class="save-button"
+                type="button"
                 onclick="saveCategory()">
-
                 💾 Kaydet
-
             </button>
 
-
         </div>
-
 
     </div>
 
 </div>
 
-
-
-<!-- MENÜ VERİLERİ -->
-
 <script src="script.js"></script>
 
-
-
 <script>
+let editingIndex = null;
 
+function showCategories() {
 
-    // =====================================
-    // DEĞİŞKENLER
-    // =====================================
+    const container = document.getElementById("categories");
 
-    let editingIndex = null;
+    container.innerHTML = "";
 
-
-
-    // =====================================
-    // KATEGORİLERİ GÖSTER
-    // =====================================
-
-    function showCategories() {
-
-
-        const container =
-            document.getElementById(
-                "categories"
-            );
-
-
-        container.innerHTML = "";
-
-
-        if (
-            menuData.categories.length === 0
-        ) {
-
-
-            container.innerHTML = `
-
-                <div class="empty">
-
-                    Henüz kategori bulunmuyor.
-
-                </div>
-
-            `;
-
-            return;
-
-        }
-
-
-        menuData.categories.forEach(
-            (category, index) => {
-
-
-                const item =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                item.className =
-                    "category";
-
-
-                item.innerHTML = `
-
-                    <div class="icon">
-
-                        ${category.icon}
-
-                    </div>
-
-
-                    <div class="category-info">
-
-                        <div class="category-name">
-
-                            ${category.name}
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="category-buttons">
-
-
-                        <button
-                            class="products-btn"
-                            onclick="openProducts('${category.id}')">
-
-                            📋 Ürünler
-
-                        </button>
-
-
-                        <button
-                            class="edit"
-                            onclick="openEditForm(${index})">
-
-                            ✏️
-
-                        </button>
-
-
-                        <button
-                            class="delete"
-                            onclick="deleteCategory(${index})">
-
-                            🗑️
-
-                        </button>
-
-
-                    </div>
-
-                `;
-
-
-                container.appendChild(item);
-
-            }
-
-        );
-
+    if (
+        !menuData ||
+        !Array.isArray(menuData.categories) ||
+        menuData.categories.length === 0
+    ) {
+        container.innerHTML =
+            '<div class="empty">Henüz kategori bulunmuyor.</div>';
+        return;
     }
 
+    menuData.categories.forEach(function(category, index) {
 
+        const item = document.createElement("div");
 
-    // =====================================
-    // ÜRÜNLERİ AÇ
-    // =====================================
+        item.className = "category";
 
-    function openProducts(categoryId) {
+        const icon = document.createElement("div");
+        icon.className = "icon";
+        icon.textContent = category.icon || "🍽️";
 
+        const info = document.createElement("div");
+        info.className = "category-info";
 
-        window.location.href =
-            "urun-yonetim.html?kategori=" +
-            encodeURIComponent(
-                categoryId
-            );
+        const name = document.createElement("div");
+        name.className = "category-name";
+        name.textContent = category.name || "";
 
+        info.appendChild(name);
+
+        const buttons = document.createElement("div");
+        buttons.className = "category-buttons";
+
+        const productsButton = document.createElement("button");
+        productsButton.className = "products-btn";
+        productsButton.textContent = "📋 Ürünler";
+        productsButton.onclick = function() {
+            openProducts(category.id);
+        };
+
+        const editButton = document.createElement("button");
+        editButton.className = "edit";
+        editButton.textContent = "✏️";
+        editButton.onclick = function() {
+            openEditForm(index);
+        };
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "delete";
+        deleteButton.textContent = "🗑️";
+        deleteButton.onclick = function() {
+            deleteCategory(index);
+        };
+
+        buttons.appendChild(productsButton);
+        buttons.appendChild(editButton);
+        buttons.appendChild(deleteButton);
+
+        item.appendChild(icon);
+        item.appendChild(info);
+        item.appendChild(buttons);
+
+        container.appendChild(item);
+    });
+}
+
+function openProducts(categoryId) {
+
+    window.location.href =
+        "urun-yonetim.html?kategori=" +
+        encodeURIComponent(categoryId);
+}
+
+function openAddForm() {
+
+    editingIndex = null;
+
+    document.getElementById("formTitle").textContent =
+        "Yeni Kategori";
+
+    document.getElementById("categoryName").value = "";
+
+    document.getElementById("categoryIcon").value = "☕";
+
+    document.getElementById("categoryModal")
+        .classList.add("active");
+}
+
+function openEditForm(index) {
+
+    const category = menuData.categories[index];
+
+    if (!category) {
+        return;
     }
 
+    editingIndex = index;
 
+    document.getElementById("formTitle").textContent =
+        "Kategoriyi Düzenle";
 
-    // =====================================
-    // YENİ KATEGORİ FORMU
-    // =====================================
+    document.getElementById("categoryName").value =
+        category.name || "";
 
-    function openAddForm() {
+    document.getElementById("categoryIcon").value =
+        category.icon || "☕";
 
+    document.getElementById("categoryModal")
+        .classList.add("active");
+}
 
-        editingIndex = null;
+function selectEmoji(emoji) {
 
+    document.getElementById("categoryIcon").value =
+        emoji;
+}
 
-        document.getElementById(
-            "formTitle"
-        ).textContent =
-            "Yeni Kategori";
+function closeForm() {
 
+    document.getElementById("categoryModal")
+        .classList.remove("active");
+}
 
-        document.getElementById(
-            "categoryName"
-        ).value = "";
+async function saveCategory() {
 
+    const name =
+        document.getElementById("categoryName")
+            .value
+            .trim();
 
-        document.getElementById(
-            "categoryIcon"
-        ).value = "☕";
+    const icon =
+        document.getElementById("categoryIcon")
+            .value
+            .trim() || "🍽️";
 
-
-        document.getElementById(
-            "categoryModal"
-        ).classList.add(
-            "active"
-        );
-
+    if (!name) {
+        alert("Lütfen kategori adını gir.");
+        return;
     }
 
+    const saveButton =
+        document.querySelector(".save-button");
 
+    saveButton.disabled = true;
+    saveButton.textContent = "Kaydediliyor...";
 
-    // =====================================
-    // DÜZENLEME FORMU
-    // =====================================
-
-    function openEditForm(index) {
-
-
-        const category =
-            menuData.categories[index];
-
-
-        editingIndex = index;
-
-
-        document.getElementById(
-            "formTitle"
-        ).textContent =
-            "Kategoriyi Düzenle";
-
-
-        document.getElementById(
-            "categoryName"
-        ).value =
-            category.name;
-
-
-        document.getElementById(
-            "categoryIcon"
-        ).value =
-            category.icon;
-
-
-        document.getElementById(
-            "categoryModal"
-        ).classList.add(
-            "active"
-        );
-
-    }
-
-
-
-    // =====================================
-    // EMOJİ SEÇ
-    // =====================================
-
-    function selectEmoji(emoji) {
-
-
-        document.getElementById(
-            "categoryIcon"
-        ).value =
-            emoji;
-
-    }
-
-
-
-    // =====================================
-    // FORMU KAPAT
-    // =====================================
-
-    function closeForm() {
-
-
-        document.getElementById(
-            "categoryModal"
-        ).classList.remove(
-            "active"
-        );
-
-    }
-
-
-
-    // =====================================
-    // KATEGORİ KAYDET
-    // =====================================
-
-    function saveCategory() {
-
-
-        const name =
-            document.getElementById(
-                "categoryName"
-            ).value.trim();
-
-
-        const icon =
-            document.getElementById(
-                "categoryIcon"
-            ).value.trim();
-
-
-        if (!name) {
-
-            alert(
-                "Lütfen kategori adını gir."
-            );
-
-            return;
-
-        }
-
-
-        const finalIcon =
-            icon || "🍽️";
-
-
-        // YENİ KATEGORİ
+    try {
 
         if (editingIndex === null) {
-
 
             const id =
                 Date.now().toString();
 
-
             menuData.categories.push({
-
                 id: id,
-
                 name: name,
-
-                icon: finalIcon
-
+                icon: icon
             });
 
+            if (!menuData.products[id]) {
+                menuData.products[id] = [];
+            }
 
-            menuData.products[id] = [];
+        } else {
 
+            const category =
+                menuData.categories[editingIndex];
 
-            saveMenuData();
+            if (!category) {
+                throw new Error(
+                    "Kategori bulunamadı."
+                );
+            }
 
-
-            closeForm();
-
-            showCategories();
-
-
-            alert(
-                "Yeni kategori başarıyla eklendi."
-            );
-
-
-            return;
-
+            category.name = name;
+            category.icon = icon;
         }
 
+        const saved =
+            await saveMenuData();
 
-        // MEVCUT KATEGORİYİ DÜZENLE
-
-        const category =
-            menuData.categories[
-                editingIndex
-            ];
-
-
-        category.name =
-            name;
-
-
-        category.icon =
-            finalIcon;
-
-
-        saveMenuData();
-
+        if (!saved) {
+            throw new Error(
+                "Google Sheets'e kayıt yapılamadı."
+            );
+        }
 
         closeForm();
 
         showCategories();
 
+        alert(
+            "Kategori başarıyla kaydedildi."
+        );
+
+    } catch (error) {
 
         alert(
-            "Kategori başarıyla güncellendi."
+            "Kategori kaydedilemedi.\n\n" +
+            error.message
         );
 
+    } finally {
+
+        saveButton.disabled = false;
+        saveButton.textContent = "💾 Kaydet";
+    }
+}
+
+async function deleteCategory(index) {
+
+    const category =
+        menuData.categories[index];
+
+    if (!category) {
+        return;
     }
 
-
-
-    // =====================================
-    // KATEGORİ SİL
-    // =====================================
-
-    function deleteCategory(index) {
-
-
-        const category =
-            menuData.categories[index];
-
-
-        const answer =
-            confirm(
-                category.name +
-                " kategorisini silmek istediğine emin misin?"
-            );
-
-
-        if (!answer) {
-
-            return;
-
-        }
-
-
-        delete menuData.products[
-            category.id
-        ];
-
-
-        menuData.categories.splice(
-            index,
-            1
+    const answer =
+        confirm(
+            category.name +
+            " kategorisini silmek istediğine emin misin?"
         );
 
+    if (!answer) {
+        return;
+    }
 
-        saveMenuData();
+    const oldCategories =
+        JSON.parse(
+            JSON.stringify(menuData.categories)
+        );
+
+    const oldProducts =
+        JSON.parse(
+            JSON.stringify(menuData.products)
+        );
+
+    delete menuData.products[category.id];
+
+    menuData.categories.splice(index, 1);
+
+    const saved =
+        await saveMenuData();
+
+    if (!saved) {
+
+        menuData.categories =
+            oldCategories;
+
+        menuData.products =
+            oldProducts;
 
         showCategories();
 
-
-        alert(
-            "Kategori silindi."
-        );
-
+        return;
     }
-
-
-
-    // =====================================
-    // BAŞLANGIÇ
-    // =====================================
 
     showCategories();
 
+    alert("Kategori silindi.");
+}
 
+document.getElementById("categoryModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+            closeForm();
+        }
+
+    });
 </script>
 
-
 </body>
-
 </html>
