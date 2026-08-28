@@ -1,196 +1,248 @@
-const GOOGLE_MENU_API =
-"https://script.google.com/macros/s/AKfycbzjnglJzykueGVEolHgYscNYZWaA8h7aw0WWq4EqHPAZaQaOHqXlPDA9Ri8mdgUPo0Czg/exec";
-
-const defaultCategories = [
-{
-id: "kahveler",
-name: "Kahveler",
-icon: "☕"
-},
-{
-id: "soguk_icecekler",
-name: "Soğuk İçecekler",
-icon: "🧊"
-},
-{
-id: "tatlilar",
-name: "Tatlılar",
-icon: "🍰"
-},
-{
-id: "kahvaltilar",
-name: "Kahvaltılar",
-icon: "🍳"
-},
-{
-id: "yiyecekler",
-name: "Yiyecekler",
-icon: "🍔"
-},
-{
-id: "diger",
-name: "Diğer",
-icon: "🥤"
-}
-];
-
-const defaultProducts = {
-kahveler: [
-{
-id: "latte",
-name: "Latte",
-description: "Espresso, sıcak süt ve süt köpüğü.",
-price: 150,
-image: "https://images.unsplash.com/photo-1561882468-9110e03e0f78?auto=format&fit=crop&w=500&q=80"
-}
-],
-soguk_icecekler: [],
-tatlilar: [],
-kahvaltilar: [],
-yiyecekler: [],
-diger: []
-};
+const GOOGLE_MENU_API = "https://script.google.com/macros/s/AKfycbzjnglJzykueGVEolHgYscNYZWaA8h7aw0WWq4EqHPAZaQaOHqXlPDA9Ri8mdgUPo0Czg/exec";
 
 let menuData = {
-categories: JSON.parse(JSON.stringify(defaultCategories)),
-products: JSON.parse(JSON.stringify(defaultProducts))
+    categories: [],
+    products: {}
 };
 
-async function loadMenuFromGoogle() {
-try {
-const response = await fetch(
-GOOGLE_MENU_API + "?t=" + Date.now(),
-{
-method: "GET",
-cache: "no-store"
-}
-);
+async function loadMenuData() {
+    try {
+        const response = await fetch(
+            GOOGLE_MENU_API + "?t=" + Date.now(),
+            {
+                method: "GET",
+                cache: "no-store"
+            }
+        );
 
-    const data = await response.json();
-
-    if (!data.success) {
-        throw new Error(data.error || "Google menüsü alınamadı.");
-    }
-
-    const categories = data.categories.length
-        ? data.categories
-        : JSON.parse(JSON.stringify(defaultCategories));
-
-    const products = {};
-
-    categories.forEach(function(category) {
-        products[category.id] = [];
-    });
-
-    data.products.forEach(function(product) {
-        if (!products[product.category]) {
-            products[product.category] = [];
+        if (!response.ok) {
+            throw new Error("Google Apps Script bağlantısı kurulamadı.");
         }
 
-        products[product.category].push({
-            id: product.productId || "",
-            name: product.name || "",
-            description: product.description || "",
-            price: Number(product.price) || 0,
-            image: product.image || ""
-        });
-    });
+        const data = await response.json();
 
-    return {
-        categories: categories,
-        products: products
-    };
+        if (!data.success) {
+            throw new Error(
+                data.error || "Menü verileri alınamadı."
+            );
+        }
 
-} catch (error) {
-    console.error("Google menüsü alınamadı:", error);
-    return null;
-}
+        menuData.categories = [];
+        menuData.products = {};
 
+        if (Array.isArray(data.categories)) {
+
+            data.categories.forEach(function(category) {
+
+                const id = String(
+                    category.id || category.category || ""
+                );
+
+                if (!id) {
+                    return;
+                }
+
+                menuData.categories.push({
+                    id: id,
+                    name: String(category.name || ""),
+                    icon: String(category.icon || "☕")
+                });
+
+                menuData.products[id] = [];
+            });
+        }
+
+        if (Array.isArray(data.products)) {
+
+            data.products.forEach(function(product) {
+
+                const categoryId =
+                    String(product.category || "");
+
+                if (!categoryId) {
+                    return;
+                }
+
+                if (!menuData.products[categoryId]) {
+                    menuData.products[categoryId] = [];
+                }
+
+                menuData.products[categoryId].push({
+                    id: String(product.productId || ""),
+                    name: String(product.name || ""),
+                    description: String(product.description || ""),
+                    price: Number(product.price) || 0,
+                    image: String(product.image || "")
+                });
+            });
+        }
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Menü yükleme hatası:",
+            error
+        );
+
+        return false;
+    }
 }
 
 async function saveMenuData() {
-try {
-const products = [];
 
-    menuData.categories.forEach(function(category) {
-        const categoryProducts =
-            menuData.products[category.id] || [];
+    try {
 
-        categoryProducts.forEach(function(product) {
-            products.push({
-                category: category.id,
-                productId: product.id || "",
-                name: product.name || "",
-                description: product.description || "",
-                price: product.price || 0,
-                image: product.image || ""
+        const categories =
+            menuData.categories.map(function(category) {
+
+                return {
+                    id: String(category.id),
+                    name: String(category.name || ""),
+                    icon: String(category.icon || "☕")
+                };
+
             });
+
+        const products = [];
+
+        Object.keys(menuData.products).forEach(function(categoryId) {
+
+            const categoryProducts =
+                menuData.products[categoryId] || [];
+
+            categoryProducts.forEach(function(product) {
+
+                products.push({
+
+                    category: String(categoryId),
+
+                    productId:
+                        String(product.id || ""),
+
+                    name:
+                        String(product.name || ""),
+
+                    description:
+                        String(product.description || ""),
+
+                    price:
+                        Number(product.price) || 0,
+
+                    image:
+                        String(product.image || "")
+                });
+
+            });
+
         });
-    });
 
-    const categories =
-        menuData.categories.map(function(category) {
-            return {
-                id: category.id,
-                name: category.name,
-                icon: category.icon
-            };
-        });
+        const response = await fetch(
+            GOOGLE_MENU_API,
+            {
+                method: "POST",
 
-    const response = await fetch(
-        GOOGLE_MENU_API,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type":
-                    "text/plain;charset=utf-8"
-            },
-            body: JSON.stringify({
-                categories: categories,
-                products: products
-            })
-        }
-    );
+                headers: {
+                    "Content-Type":
+                        "text/plain;charset=utf-8"
+                },
 
-    const result = await response.json();
-
-    if (!result.success) {
-        throw new Error(
-            result.error || "Google kayıt işlemi başarısız."
+                body: JSON.stringify({
+                    categories: categories,
+                    products: products
+                })
+            }
         );
+
+        if (!response.ok) {
+            throw new Error(
+                "Google Apps Script kayıt isteğini kabul etmedi."
+            );
+        }
+
+        const result =
+            await response.json();
+
+        if (!result.success) {
+            throw new Error(
+                result.error ||
+                "Google Sheets'e kayıt yapılamadı."
+            );
+        }
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Menü kaydetme hatası:",
+            error
+        );
+
+        alert(
+            "Menü kaydedilemedi.\n\n" +
+            error.message
+        );
+
+        return false;
+    }
+}
+
+async function refreshMenuData() {
+
+    const success =
+        await loadMenuData();
+
+    if (!success) {
+        return false;
+    }
+
+    if (
+        typeof showCategories ===
+        "function"
+    ) {
+        showCategories();
+    }
+
+    if (
+        typeof renderMenu ===
+        "function"
+    ) {
+        renderMenu();
     }
 
     return true;
-
-} catch (error) {
-    console.error("Kaydetme hatası:", error);
-
-    alert(
-        "Menü kaydedilemedi.\n\n" +
-        error.message
-    );
-
-    return false;
 }
 
-}
+document.addEventListener(
+    "DOMContentLoaded",
+    async function() {
 
-async function initializeMenu() {
-const googleMenu =
-await loadMenuFromGoogle();
+        const success =
+            await loadMenuData();
 
-if (googleMenu) {
-    menuData = googleMenu;
-}
+        if (!success) {
 
-if (typeof showCategories === "function") {
-    showCategories();
-}
+            console.error(
+                "Menü verileri yüklenemedi."
+            );
 
-if (typeof renderMenu === "function") {
-    renderMenu();
-}
+            return;
+        }
 
-}
+        if (
+            typeof showCategories ===
+            "function"
+        ) {
+            showCategories();
+        }
 
-initializeMenu();
+        if (
+            typeof renderMenu ===
+            "function"
+        ) {
+            renderMenu();
+        }
+    }
+);
