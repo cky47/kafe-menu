@@ -94,38 +94,86 @@ cache: "no-store"
         throw new Error("Geçersiz Google menü verisi.");
     }
 
-    if (data.length === 0) {
-        console.log("Google Sheet boş. Varsayılan menü kullanılıyor.");
-        return null;
-    }
+    const categories = JSON.parse(
+        JSON.stringify(defaultMenuData.categories)
+    );
 
-    const googleMenu = {
-        categories: JSON.parse(JSON.stringify(defaultMenuData.categories)),
-        products: {}
-    };
+    const products = {};
 
-    googleMenu.categories.forEach(function(category) {
-        googleMenu.products[category.id] = [];
+    categories.forEach(function(category) {
+        products[category.id] = [];
+    });
+
+    const categoryMap = {};
+
+    categories.forEach(function(category) {
+        categoryMap[category.id] = category;
     });
 
     data.forEach(function(item) {
-        if (!item.category) {
+
+        if (item._categoryData) {
+
+            const id = String(item.category || "").trim();
+
+            if (!id) {
+                return;
+            }
+
+            if (categoryMap[id]) {
+
+                categoryMap[id].name =
+                    item.categoryName ||
+                    categoryMap[id].name;
+
+                categoryMap[id].icon =
+                    item.categoryIcon ||
+                    categoryMap[id].icon;
+
+            } else {
+
+                const newCategory = {
+                    id: id,
+                    name: item.categoryName || id,
+                    icon: item.categoryIcon || "🍽️"
+                };
+
+                categories.push(newCategory);
+
+                categoryMap[id] = newCategory;
+
+                products[id] = [];
+            }
+
             return;
         }
 
-        const categoryId = String(item.category).trim();
+        const categoryId =
+            String(item.category || "").trim();
 
-        if (!googleMenu.products[categoryId]) {
-            googleMenu.products[categoryId] = [];
+        if (!categoryId) {
+            return;
+        }
 
-            googleMenu.categories.push({
+        if (!products[categoryId]) {
+
+            products[categoryId] = [];
+
+            const newCategory = {
                 id: categoryId,
                 name: categoryId,
                 icon: "🍽️"
-            });
+            };
+
+            categories.push(newCategory);
+            categoryMap[categoryId] = newCategory;
         }
 
-        googleMenu.products[categoryId].push({
+        if (!item.name) {
+            return;
+        }
+
+        products[categoryId].push({
             id: item.productId || Date.now().toString(),
             name: item.name || "",
             description: item.description || "",
@@ -134,17 +182,27 @@ cache: "no-store"
         });
     });
 
-    return googleMenu;
+    return {
+        categories: categories,
+        products: products
+    };
 
 } catch (error) {
-    console.error("Google menüsü alınamadı:", error);
+
+    console.error(
+        "Google menüsü alınamadı:",
+        error
+    );
+
     return null;
 }
 
 }
 
 async function initializeMenu() {
-const googleMenu = await loadMenuFromGoogle();
+
+const googleMenu =
+    await loadMenuFromGoogle();
 
 if (googleMenu) {
     menuData = googleMenu;
@@ -158,34 +216,24 @@ if (typeof showCategories === "function") {
     showCategories();
 }
 
-console.log("Menü hazır.");
-
 }
 
 initializeMenu();
 
 async function saveMenuData() {
+
 try {
-const rows = [];
+
+    const products = [];
 
     menuData.categories.forEach(function(category) {
-        const products = menuData.products[category.id] || [];
 
-        if (products.length === 0) {
-            rows.push({
-                category: category.id,
-                productId: "",
-                name: "",
-                description: "",
-                price: "",
-                image: ""
-            });
+        const categoryProducts =
+            menuData.products[category.id] || [];
 
-            return;
-        }
+        categoryProducts.forEach(function(product) {
 
-        products.forEach(function(product) {
-            rows.push({
+            products.push({
                 category: category.id,
                 productId: product.id || "",
                 name: product.name || "",
@@ -193,39 +241,69 @@ const rows = [];
                 price: product.price || 0,
                 image: product.image || ""
             });
+
         });
+
     });
 
-    const response = await fetch(GOOGLE_MENU_API, {
-        method: "POST",
-        headers: {
-            "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify(rows)
-    });
+    const categories =
+        menuData.categories.map(function(category) {
+
+            return {
+                id: category.id,
+                name: category.name,
+                icon: category.icon
+            };
+
+        });
+
+    const payload = {
+        categories: categories,
+        products: products
+    };
+
+    const response =
+        await fetch(GOOGLE_MENU_API, {
+            method: "POST",
+            headers: {
+                "Content-Type":
+                    "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify(payload)
+        });
 
     if (!response.ok) {
-        throw new Error("Google kayıt bağlantısı başarısız.");
-    }
-
-    const result = await response.json();
-
-    if (!result.success) {
         throw new Error(
-            result.error || "Menü kaydedilemedi."
+            "Google kayıt bağlantısı başarısız."
         );
     }
 
-    console.log("Menü Google Sheets'e başarıyla kaydedildi.");
+    const result =
+        await response.json();
+
+    if (!result.success) {
+        throw new Error(
+            result.error ||
+            "Menü kaydedilemedi."
+        );
+    }
+
+    console.log(
+        "Menü başarıyla kaydedildi."
+    );
 
     return true;
 
 } catch (error) {
-    console.error("Menü kaydetme hatası:", error);
+
+    console.error(
+        "Menü kaydetme hatası:",
+        error
+    );
 
     alert(
         "Menü kaydedilemedi.\n\n" +
-        "Google Apps Script bağlantısını kontrol et."
+        error.message
     );
 
     return false;
