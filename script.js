@@ -98,7 +98,7 @@ products: {
 };
 
 // ========================================
-// MENÜYÜ GOOGLE SHEETS'TEN AL
+// MENÜ VERİSİNİ GOOGLE'DAN AL
 // ========================================
 
 async function loadMenuFromGoogle() {
@@ -110,25 +110,34 @@ try {
         await fetch(GOOGLE_MENU_API);
 
     if (!response.ok) {
-
         throw new Error(
-            "Google menü bağlantısı başarısız."
+            "Google bağlantısı başarısız."
         );
-
     }
 
     const data =
         await response.json();
 
     if (!Array.isArray(data)) {
-
         throw new Error(
-            "Google'dan geçersiz menü verisi geldi."
+            "Geçersiz Google menü verisi."
         );
-
     }
 
-    const menuData = {
+    // Google Sheet tamamen boşsa
+    // varsayılan menüyü koru
+
+    if (data.length === 0) {
+
+        console.log(
+            "Google Sheet boş. Varsayılan menü kullanılıyor."
+        );
+
+        return null;
+    }
+
+
+    const googleMenu = {
 
         categories:
             defaultMenuData.categories,
@@ -151,15 +160,15 @@ try {
 
         if (
             !item.category ||
-            !menuData.products[item.category]
+            !googleMenu.products[item.category]
         ) {
-
             return;
-
         }
 
 
-        menuData.products[item.category].push({
+        googleMenu.products[
+            item.category
+        ].push({
 
             id:
                 item.productId || "",
@@ -178,12 +187,13 @@ try {
     });
 
 
-    return menuData;
+    return googleMenu;
+
 
 } catch (error) {
 
     console.error(
-        "Google menü alınamadı:",
+        "Google menüsü alınamadı:",
         error
     );
 
@@ -195,7 +205,7 @@ try {
 }
 
 // ========================================
-// MENÜ VERİSİNİ HAZIRLA
+// BAŞLANGIÇ MENÜSÜ
 // ========================================
 
 let menuData =
@@ -209,26 +219,27 @@ loadMenuFromGoogle()
 .then(function(googleMenu) {
 
 ```
-    if (googleMenu) {
+    if (!googleMenu) {
 
-        menuData =
-            googleMenu;
+        return;
 
-        console.log(
-            "Google menüsü başarıyla yüklendi."
-        );
+    }
 
 
-        // Sayfada menü zaten çizilmişse
-        // tekrar çiz
+    menuData =
+        googleMenu;
 
-        if (
-            typeof renderMenu === "function"
-        ) {
 
-            renderMenu();
+    console.log(
+        "Google menüsü başarıyla yüklendi."
+    );
 
-        }
+
+    if (
+        typeof renderMenu === "function"
+    ) {
+
+        renderMenu();
 
     }
 
@@ -236,7 +247,7 @@ loadMenuFromGoogle()
 ```
 
 // ========================================
-// MENÜYÜ KAYDET
+// MENÜYÜ GOOGLE SHEETS'E KAYDET
 // ========================================
 
 async function saveMenuData() {
