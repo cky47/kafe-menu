@@ -1,40 +1,38 @@
 const menuData = {
-
 categories: [
-    {
-        id: "kahveler",
-        name: "Kahveler",
-        icon: "☕"
-    },
-    {
-        id: "soguk_icecekler",
-        name: "Soğuk İçecekler",
-        icon: "🧊"
-    },
-    {
-        id: "tatlilar",
-        name: "Tatlılar",
-        icon: "🍰"
-    },
-    {
-        id: "kahvaltilar",
-        name: "Kahvaltılar",
-        icon: "🍳"
-    },
-    {
-        id: "yiyecekler",
-        name: "Yiyecekler",
-        icon: "🍔"
-    },
-    {
-        id: "diger",
-        name: "Diğer",
-        icon: "🥤"
-    }
+{
+id: "kahveler",
+name: "Kahveler",
+icon: "☕"
+},
+{
+id: "soguk_icecekler",
+name: "Soğuk İçecekler",
+icon: "🧊"
+},
+{
+id: "tatlilar",
+name: "Tatlılar",
+icon: "🍰"
+},
+{
+id: "kahvaltilar",
+name: "Kahvaltılar",
+icon: "🍳"
+},
+{
+id: "yiyecekler",
+name: "Yiyecekler",
+icon: "🍔"
+},
+{
+id: "diger",
+name: "Diğer",
+icon: "🥤"
+}
 ],
 
 products: {
-
     kahveler: [
         {
             id: "latte",
@@ -74,10 +72,3 @@ products: {
 }
 
 };
-
-function saveMenuData() {
-localStorage.setItem(
-"melittaCoffeeMenu",
-JSON.stringify(menuData)
-);
-}
