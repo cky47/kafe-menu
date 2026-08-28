@@ -3,7 +3,6 @@ const GOOGLE_MENU_API =
 
 const defaultMenuData = {
 
-```
 categories: [
 
     {
@@ -321,6 +320,4 @@ try {
     return false;
 
 }
-```
-
 }
