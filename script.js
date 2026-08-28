@@ -1,10 +1,6 @@
 const GOOGLE_MENU_API =
 "https://script.google.com/macros/s/AKfycbz5bfWz50_hUmHYZgIBllpeHAvWnceLkNJ81EPYga9z0qNHJ-T5zEDDksbZEdrrianGhw/exec";
 
-// ========================================
-// MELITTA COFFEE - VARSAYILAN MENÜ
-// ========================================
-
 const defaultMenuData = {
 
 ```
@@ -97,9 +93,7 @@ products: {
 
 };
 
-// ========================================
-// MENÜ VERİSİNİ GOOGLE'DAN AL
-// ========================================
+let menuData = defaultMenuData;
 
 async function loadMenuFromGoogle() {
 
@@ -110,22 +104,25 @@ try {
         await fetch(GOOGLE_MENU_API);
 
     if (!response.ok) {
+
         throw new Error(
             "Google bağlantısı başarısız."
         );
+
     }
 
     const data =
         await response.json();
 
+
     if (!Array.isArray(data)) {
+
         throw new Error(
             "Geçersiz Google menü verisi."
         );
+
     }
 
-    // Google Sheet tamamen boşsa
-    // varsayılan menüyü koru
 
     if (data.length === 0) {
 
@@ -133,7 +130,8 @@ try {
             "Google Sheet boş. Varsayılan menü kullanılıyor."
         );
 
-        return null;
+        return;
+
     }
 
 
@@ -162,7 +160,9 @@ try {
             !item.category ||
             !googleMenu.products[item.category]
         ) {
+
             return;
+
         }
 
 
@@ -187,47 +187,7 @@ try {
     });
 
 
-    return googleMenu;
-
-
-} catch (error) {
-
-    console.error(
-        "Google menüsü alınamadı:",
-        error
-    );
-
-    return null;
-
-}
-```
-
-}
-
-// ========================================
-// BAŞLANGIÇ MENÜSÜ
-// ========================================
-
-let menuData =
-defaultMenuData;
-
-// ========================================
-// GOOGLE MENÜSÜNÜ YÜKLE
-// ========================================
-
-loadMenuFromGoogle()
-.then(function(googleMenu) {
-
-```
-    if (!googleMenu) {
-
-        return;
-
-    }
-
-
-    menuData =
-        googleMenu;
+    menuData = googleMenu;
 
 
     console.log(
@@ -243,12 +203,20 @@ loadMenuFromGoogle()
 
     }
 
-});
+
+} catch (error) {
+
+    console.error(
+        "Google menüsü alınamadı:",
+        error
+    );
+
+}
 ```
 
-// ========================================
-// MENÜYÜ GOOGLE SHEETS'E KAYDET
-// ========================================
+}
+
+loadMenuFromGoogle();
 
 async function saveMenuData() {
 
@@ -261,13 +229,13 @@ try {
     menuData.categories.forEach(
         function(category) {
 
-            const products =
+            const categoryProducts =
                 menuData.products[
                     category.id
                 ] || [];
 
 
-            products.forEach(
+            categoryProducts.forEach(
                 function(product) {
 
                     rows.push({
@@ -304,8 +272,10 @@ try {
                 method: "POST",
 
                 headers: {
+
                     "Content-Type":
                         "text/plain;charset=utf-8"
+
                 },
 
                 body:
